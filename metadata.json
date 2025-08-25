@@ -1,0 +1,6 @@
+{
+  "name": "Copy of Mahnungsgenerator für Rechnungen",
+  "description": "Laden Sie eine unbezahlte Rechnung als PDF hoch, um sofort eine professionelle Mahnung mit KI zu erstellen.",
+  "requestFramePermissions": [],
+  "prompt": ""
+}
