@@ -1,6 +1,6 @@
 import { User } from '../stores';
 
-const API_BASE = 'http://localhost:5000/api';
+const API_BASE = 'https://law-funnel-server.vercel.app/api';
 
 /**
  * API Response interfaces

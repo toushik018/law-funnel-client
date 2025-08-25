@@ -53,7 +53,7 @@ export interface CasesResponse {
 }
 
 class CaseService {
-    private baseUrl = 'http://localhost:5000/api/cases';
+    private baseUrl = 'https://law-funnel-server.vercel.app/api/cases';
 
     /**
      * Create a new case
