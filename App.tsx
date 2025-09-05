@@ -520,6 +520,17 @@ export default function App() {
       return <CaseHistory onNavigateBack={() => navigate("/")} />;
     }
 
+    // Handle unknown routes by redirecting to home
+    if (
+      route !== "/" &&
+      route !== "/impressum" &&
+      route !== "/profile" &&
+      route !== "/cases"
+    ) {
+      // Redirect to home for unknown routes
+      setTimeout(() => navigate("/"), 0);
+    }
+
     return (
       <div
         className={`min-h-screen bg-gray-50 ${showLegalModal ? "blur-sm" : ""}`}
