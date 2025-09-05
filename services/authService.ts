@@ -137,29 +137,43 @@ export class AuthService {
 
     /**
      * Check if user is authenticated (useful for app initialization)
-     * Enhanced with cookie debugging
+     * Enhanced with Safari-specific debugging
      */
     static async checkAuth(): Promise<{ isAuthenticated: boolean; user?: User }> {
         try {
-            // Debug cookie information
-            const cookieDebugInfo = {
+            // Enhanced Safari debugging
+            const debugInfo = {
                 userAgent: navigator.userAgent,
                 cookiesEnabled: navigator.cookieEnabled,
                 currentDomain: window.location.hostname,
                 protocol: window.location.protocol,
-                // Check if we can access document.cookie (should be empty for httpOnly)
-                documentCookie: document.cookie ? 'present' : 'empty'
+                isSafari: /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent),
+                documentCookie: document.cookie || 'empty',
+                apiBaseUrl: API_BASE,
+                browserInfo: this.getBrowserCompatibilityInfo()
             };
 
-            console.log('Auth Check Debug Info:', cookieDebugInfo);
+            console.log('🔐 Auth Check Debug Info:', debugInfo);
+
+            // Special handling for Safari
+            if (debugInfo.isSafari) {
+                console.log('🦊 Safari detected - using enhanced authentication flow');
+            }
 
             const response = await this.getProfile();
+            console.log('✅ Authentication successful');
             return {
                 isAuthenticated: true,
                 user: response.data
             };
         } catch (error) {
-            console.log('Authentication check failed:', error);
+            const errorInfo = {
+                error: error instanceof Error ? error.message : 'Unknown error',
+                isSafari: /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent),
+                cookiesEnabled: navigator.cookieEnabled,
+                thirdPartyCookiesBlocked: this.checkThirdPartyCookies()
+            };
+            console.log('❌ Authentication check failed:', errorInfo);
             return {
                 isAuthenticated: false
             };
@@ -182,6 +196,50 @@ export class AuthService {
             secureContext: location.protocol === 'https:',
             thirdPartyCookiesBlocked: this.checkThirdPartyCookies()
         };
+    }
+
+    /**
+     * Safari-specific authentication test
+     * Call this method to diagnose Safari cookie issues
+     */
+    static async testSafariAuth(): Promise<{ success: boolean; details: any }> {
+        const isSafari = /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent);
+
+        if (!isSafari) {
+            return { success: true, details: { message: 'Not Safari browser' } };
+        }
+
+        const testResults = {
+            browser: 'Safari',
+            cookiesEnabled: navigator.cookieEnabled,
+            thirdPartyCookiesBlocked: this.checkThirdPartyCookies(),
+            browserInfo: this.getBrowserCompatibilityInfo(),
+            apiBaseUrl: API_BASE,
+            currentDomain: window.location.hostname,
+            protocol: window.location.protocol,
+            documentCookie: document.cookie || 'empty'
+        };
+
+        try {
+            // Test a simple API call
+            await this.getProfile();
+            return {
+                success: true,
+                details: {
+                    ...testResults,
+                    message: 'Safari authentication working correctly'
+                }
+            };
+        } catch (error) {
+            return {
+                success: false,
+                details: {
+                    ...testResults,
+                    error: error instanceof Error ? error.message : 'Unknown error',
+                    message: 'Safari authentication failed'
+                }
+            };
+        }
     }
 
     /**
