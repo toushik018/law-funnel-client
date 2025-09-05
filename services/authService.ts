@@ -1,6 +1,49 @@
 import { User } from '../stores';
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
+const TOKEN_KEY = 'auth_token';
+const TOKEN_EXPIRY_KEY = 'auth_token_expiry';
+
+/**
+ * Token Storage Utilities
+ * Simple and reliable localStorage-based token management
+ */
+class TokenStorage {
+    static setToken(token: string, expiresIn: number = 7 * 24 * 60 * 60 * 1000): void {
+        const expiryTime = Date.now() + expiresIn;
+        localStorage.setItem(TOKEN_KEY, token);
+        localStorage.setItem(TOKEN_EXPIRY_KEY, expiryTime.toString());
+        console.log('🔑 Token stored in localStorage');
+    }
+
+    static getToken(): string | null {
+        const token = localStorage.getItem(TOKEN_KEY);
+        const expiry = localStorage.getItem(TOKEN_EXPIRY_KEY);
+
+        if (!token || !expiry) {
+            return null;
+        }
+
+        // Check if token is expired
+        if (Date.now() > parseInt(expiry)) {
+            console.log('🕐 Token expired, clearing storage');
+            this.clearToken();
+            return null;
+        }
+
+        return token;
+    }
+
+    static clearToken(): void {
+        localStorage.removeItem(TOKEN_KEY);
+        localStorage.removeItem(TOKEN_EXPIRY_KEY);
+        console.log('🗑️ Token cleared from localStorage');
+    }
+
+    static hasValidToken(): boolean {
+        return this.getToken() !== null;
+    }
+}
 
 /**
  * API Response interfaces
@@ -13,7 +56,7 @@ interface ApiResponse<T> {
 
 interface LoginResponse {
     user: User;
-    // No token in response - it's set as httpOnly cookie
+    token: string; // Now includes token in response
 }
 
 interface RegisterData {
@@ -45,22 +88,28 @@ interface UpdateProfileData {
  */
 export class AuthService {
     /**
-     * Make authenticated API request with credentials (cookies)
-     * Enhanced with debugging and error handling for cookie issues
+     * Make authenticated API request with token from localStorage
      */
     private static async request<T>(
         endpoint: string,
         options: RequestInit = {}
     ): Promise<ApiResponse<T>> {
         const url = `${API_BASE}${endpoint}`;
+        const token = TokenStorage.getToken();
+
+        const headers: Record<string, string> = {
+            'Content-Type': 'application/json',
+            ...(options.headers as Record<string, string>),
+        };
+
+        // Add Authorization header if token exists
+        if (token) {
+            headers.Authorization = `Bearer ${token}`;
+        }
 
         const response = await fetch(url, {
-            credentials: 'include', // IMPORTANT: Include cookies in requests
-            headers: {
-                'Content-Type': 'application/json',
-                ...options.headers,
-            },
             ...options,
+            headers,
         });
 
         const data = await response.json();
@@ -72,16 +121,12 @@ export class AuthService {
                     status: response.status,
                     message: data.message,
                     url,
+                    hasToken: !!token,
                     userAgent: navigator.userAgent,
-                    cookiesEnabled: navigator.cookieEnabled,
-                    // Log browser info for debugging
-                    browserInfo: {
-                        isSafari: /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent),
-                        isChrome: /Chrome/.test(navigator.userAgent),
-                        isFirefox: /Firefox/.test(navigator.userAgent),
-                        platform: navigator.platform
-                    }
                 });
+
+                // Clear invalid token
+                TokenStorage.clearToken();
             }
             throw new Error(data.message || 'API request failed');
         }
@@ -100,22 +145,38 @@ export class AuthService {
     }
 
     /**
-     * Login user - token is set as httpOnly cookie by server
+     * Login user - token is stored in localStorage
      */
     static async login(credentials: LoginData): Promise<ApiResponse<LoginResponse>> {
-        return this.request<LoginResponse>('/auth/login', {
+        const response = await this.request<LoginResponse>('/auth/login', {
             method: 'POST',
             body: JSON.stringify(credentials),
         });
+
+        // Store the token in localStorage
+        if (response.data.token) {
+            TokenStorage.setToken(response.data.token);
+        }
+
+        return response;
     }
 
     /**
-     * Logout user - server clears the httpOnly cookie
+     * Logout user - clear token from localStorage
      */
-    static async logout(): Promise<ApiResponse<{}>> {
-        return this.request<{}>('/auth/logout', {
-            method: 'POST',
-        });
+    static async logout(): Promise<void> {
+        try {
+            // Call server logout endpoint (optional, for server-side cleanup)
+            await this.request('/auth/logout', {
+                method: 'POST',
+            });
+        } catch (error) {
+            // Even if server call fails, clear local token
+            console.log('Server logout failed, but continuing with local cleanup:', error);
+        } finally {
+            // Always clear local token
+            TokenStorage.clearToken();
+        }
     }
 
     /**
@@ -136,44 +197,32 @@ export class AuthService {
     }
 
     /**
-     * Check if user is authenticated (useful for app initialization)
-     * Enhanced with Safari-specific debugging
+     * Check if user is authenticated - simple and reliable
      */
     static async checkAuth(): Promise<{ isAuthenticated: boolean; user?: User }> {
         try {
-            // Enhanced Safari debugging
-            const debugInfo = {
-                userAgent: navigator.userAgent,
-                cookiesEnabled: navigator.cookieEnabled,
-                currentDomain: window.location.hostname,
-                protocol: window.location.protocol,
-                isSafari: /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent),
-                documentCookie: document.cookie || 'empty',
-                apiBaseUrl: API_BASE,
-                browserInfo: this.getBrowserCompatibilityInfo()
-            };
-
-            console.log('🔐 Auth Check Debug Info:', debugInfo);
-
-            // Special handling for Safari
-            if (debugInfo.isSafari) {
-                console.log('🦊 Safari detected - using enhanced authentication flow');
+            // Check if we have a valid token
+            if (!TokenStorage.hasValidToken()) {
+                console.log('🔴 No valid token found in localStorage');
+                return { isAuthenticated: false };
             }
 
+            console.log('🔑 Valid token found, checking with server...');
+
+            // Verify token with server and get user data
             const response = await this.getProfile();
             console.log('✅ Authentication successful');
+
             return {
                 isAuthenticated: true,
                 user: response.data
             };
         } catch (error) {
-            const errorInfo = {
-                error: error instanceof Error ? error.message : 'Unknown error',
-                isSafari: /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent),
-                cookiesEnabled: navigator.cookieEnabled,
-                thirdPartyCookiesBlocked: this.checkThirdPartyCookies()
-            };
-            console.log('❌ Authentication check failed:', errorInfo);
+            console.log('❌ Authentication check failed:', error instanceof Error ? error.message : 'Unknown error');
+
+            // Clear invalid token
+            TokenStorage.clearToken();
+
             return {
                 isAuthenticated: false
             };
@@ -181,7 +230,7 @@ export class AuthService {
     }
 
     /**
-     * Debug utility to check browser compatibility
+     * Get browser compatibility info (simplified)
      */
     static getBrowserCompatibilityInfo() {
         const ua = navigator.userAgent;
@@ -189,72 +238,22 @@ export class AuthService {
             isSafari: /Safari/.test(ua) && !/Chrome/.test(ua),
             isChrome: /Chrome/.test(ua),
             isFirefox: /Firefox/.test(ua),
-            isMacOS: /Mac OS X/.test(ua),
-            cookiesEnabled: navigator.cookieEnabled,
             platform: navigator.platform,
-            userAgent: ua,
-            secureContext: location.protocol === 'https:',
-            thirdPartyCookiesBlocked: this.checkThirdPartyCookies()
+            userAgent: ua
         };
     }
 
     /**
-     * Safari-specific authentication test
-     * Call this method to diagnose Safari cookie issues
+     * Get basic browser info for debugging
      */
-    static async testSafariAuth(): Promise<{ success: boolean; details: any }> {
-        const isSafari = /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent);
-
-        if (!isSafari) {
-            return { success: true, details: { message: 'Not Safari browser' } };
-        }
-
-        const testResults = {
-            browser: 'Safari',
-            cookiesEnabled: navigator.cookieEnabled,
-            thirdPartyCookiesBlocked: this.checkThirdPartyCookies(),
-            browserInfo: this.getBrowserCompatibilityInfo(),
-            apiBaseUrl: API_BASE,
-            currentDomain: window.location.hostname,
-            protocol: window.location.protocol,
-            documentCookie: document.cookie || 'empty'
+    static getBrowserInfo() {
+        const ua = navigator.userAgent;
+        return {
+            isSafari: /Safari/.test(ua) && !/Chrome/.test(ua),
+            isChrome: /Chrome/.test(ua),
+            isFirefox: /Firefox/.test(ua),
+            platform: navigator.platform,
+            userAgent: ua
         };
-
-        try {
-            // Test a simple API call
-            await this.getProfile();
-            return {
-                success: true,
-                details: {
-                    ...testResults,
-                    message: 'Safari authentication working correctly'
-                }
-            };
-        } catch (error) {
-            return {
-                success: false,
-                details: {
-                    ...testResults,
-                    error: error instanceof Error ? error.message : 'Unknown error',
-                    message: 'Safari authentication failed'
-                }
-            };
-        }
-    }
-
-    /**
-     * Check if third-party cookies are blocked
-     */
-    private static checkThirdPartyCookies(): boolean {
-        try {
-            // Simple check - this is not 100% accurate but gives us an indication
-            document.cookie = 'test-cookie=test; SameSite=None; Secure';
-            const hasTestCookie = document.cookie.includes('test-cookie=test');
-            // Clean up
-            document.cookie = 'test-cookie=; expires=Thu, 01 Jan 1970 00:00:00 GMT';
-            return !hasTestCookie;
-        } catch (e) {
-            return true; // Assume blocked if we can't test
-        }
     }
 }

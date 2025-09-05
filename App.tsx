@@ -157,16 +157,16 @@ export default function App() {
     setShowLegalModal(false);
   };
 
-  // Handle logout with server call to clear cookies
+  // Handle logout with localStorage cleanup
   const handleLogout = async () => {
     try {
-      // Call server to clear httpOnly cookies
+      // Call server logout endpoint (optional cleanup)
       await AuthService.logout();
     } catch (error) {
       // Log error but don't block logout
       console.error("Server logout error:", error);
     } finally {
-      // Always clear local auth state regardless of server response
+      // Always clear local auth state
       logout();
     }
   };

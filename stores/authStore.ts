@@ -99,9 +99,9 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
 
     // Helper to get auth headers for API calls
     getAuthHeaders: () => {
+        // No need for manual headers - token is automatically added by AuthService
         return {
             'Content-Type': 'application/json',
-            // Cookies are automatically included in requests to same domain
         };
     },
 }));
