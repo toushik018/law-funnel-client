@@ -7,8 +7,6 @@
 // Types matching the simplified backend
 export interface LegalQualificationAnswers {
     contractSituation: string;
-    fulfillmentDate: string;
-    invoiceWrittenDate: string;
     invoiceSentDate: string;
 }
 
@@ -53,7 +51,7 @@ export interface CasesResponse {
 }
 
 class CaseService {
-    private baseUrl = 'https://law-funnel-server.vercel.app/api/cases';
+    private baseUrl = `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/cases`;
 
     /**
      * Create a new case

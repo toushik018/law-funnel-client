@@ -8,8 +8,6 @@ import { format } from "date-fns";
 
 export interface LegalQualificationData {
   contractSituation: string;
-  fulfillmentDate: string;
-  invoiceWrittenDate: string;
   invoiceSentDate: string;
 }
 
@@ -31,15 +29,11 @@ export default function LegalQualification({
       const answers = currentCase.legalQualificationAnswers;
       return {
         contractSituation: answers.contractSituation || "",
-        fulfillmentDate: answers.fulfillmentDate || "",
-        invoiceWrittenDate: answers.invoiceWrittenDate || "",
         invoiceSentDate: answers.invoiceSentDate || "",
       };
     }
     return {
       contractSituation: "",
-      fulfillmentDate: "",
-      invoiceWrittenDate: "",
       invoiceSentDate: "",
     };
   });
@@ -52,8 +46,6 @@ export default function LegalQualification({
       const answers = currentCase.legalQualificationAnswers;
       setFormData({
         contractSituation: answers.contractSituation || "",
-        fulfillmentDate: answers.fulfillmentDate || "",
-        invoiceWrittenDate: answers.invoiceWrittenDate || "",
         invoiceSentDate: answers.invoiceSentDate || "",
       });
     }
@@ -85,37 +77,19 @@ export default function LegalQualification({
       newErrors.contractSituation = "Please describe the contract situation";
     }
 
-    if (!formData.fulfillmentDate) {
-      newErrors.fulfillmentDate = "Please provide the fulfillment date";
-    }
-
-    if (!formData.invoiceWrittenDate) {
-      newErrors.invoiceWrittenDate =
-        "Please provide when the invoice was written";
-    }
-
     if (!formData.invoiceSentDate) {
       newErrors.invoiceSentDate = "Please provide when the invoice was sent";
     }
 
-    // Validate date logic
-    if (formData.fulfillmentDate && formData.invoiceWrittenDate) {
-      const fulfillmentDate = new Date(formData.fulfillmentDate);
-      const invoiceWrittenDate = new Date(formData.invoiceWrittenDate);
-
-      if (invoiceWrittenDate < fulfillmentDate) {
-        newErrors.invoiceWrittenDate =
-          "Invoice written date should be after fulfillment date";
-      }
-    }
-
-    if (formData.invoiceWrittenDate && formData.invoiceSentDate) {
-      const invoiceWrittenDate = new Date(formData.invoiceWrittenDate);
+    // Validate 30-day minimum requirement for invoice sent date
+    if (formData.invoiceSentDate) {
       const invoiceSentDate = new Date(formData.invoiceSentDate);
+      const thirtyDaysAgo = new Date();
+      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
-      if (invoiceSentDate < invoiceWrittenDate) {
+      if (invoiceSentDate > thirtyDaysAgo) {
         newErrors.invoiceSentDate =
-          "Invoice sent date should be after written date";
+          "Invoice sent date must be at least 30 days ago";
       }
     }
 
@@ -267,7 +241,7 @@ export default function LegalQualification({
             )}
           </div>
 
-          {/* Date Fields - Responsive Grid Layout */}
+          {/* Date Fields */}
           <div>
             <h3 className="text-sm font-medium text-foreground mb-4 flex items-center gap-2">
               <svg
@@ -283,105 +257,15 @@ export default function LegalQualification({
                   d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
                 />
               </svg>
-              Important Dates
+              Important Date
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="max-w-md">
               <div>
-                <label
-                  htmlFor="fulfillmentDate"
-                  className="block text-sm font-medium text-foreground mb-2"
-                >
-                  Fulfillment Date <span className="text-destructive">*</span>
-                </label>
-                <DatePicker
-                  id="fulfillmentDate"
-                  date={
-                    formData.fulfillmentDate
-                      ? new Date(formData.fulfillmentDate)
-                      : undefined
-                  }
-                  onDateChange={(date) =>
-                    handleDateChange("fulfillmentDate", date)
-                  }
-                  placeholder="Select date"
-                  className={
-                    errors.fulfillmentDate
-                      ? "border-destructive bg-destructive/5"
-                      : ""
-                  }
-                />
-                <p className="text-xs text-muted-foreground mt-1">
-                  When was the service/product delivered?
-                </p>
-                {errors.fulfillmentDate && (
-                  <p className="mt-1 text-xs text-destructive flex items-center gap-1">
-                    <svg
-                      className="w-3 h-3"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                    <span>{errors.fulfillmentDate}</span>
-                  </p>
-                )}
-              </div>
-
-              <div>
-                <label
-                  htmlFor="invoiceWrittenDate"
-                  className="block text-sm font-medium text-foreground mb-2"
-                >
-                  Invoice Written <span className="text-destructive">*</span>
-                </label>
-                <DatePicker
-                  id="invoiceWrittenDate"
-                  date={
-                    formData.invoiceWrittenDate
-                      ? new Date(formData.invoiceWrittenDate)
-                      : undefined
-                  }
-                  onDateChange={(date) =>
-                    handleDateChange("invoiceWrittenDate", date)
-                  }
-                  placeholder="Select date"
-                  className={
-                    errors.invoiceWrittenDate
-                      ? "border-destructive bg-destructive/5"
-                      : ""
-                  }
-                />
-                <p className="text-xs text-muted-foreground mt-1">
-                  When was the invoice created?
-                </p>
-                {errors.invoiceWrittenDate && (
-                  <p className="mt-1 text-xs text-destructive flex items-center gap-1">
-                    <svg
-                      className="w-3 h-3"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                    <span>{errors.invoiceWrittenDate}</span>
-                  </p>
-                )}
-              </div>
-
-              <div className="md:col-span-2 lg:col-span-1">
                 <label
                   htmlFor="invoiceSentDate"
                   className="block text-sm font-medium text-foreground mb-2"
                 >
-                  Invoice Sent <span className="text-destructive">*</span>
+                  Invoice Sent Date <span className="text-destructive">*</span>
                 </label>
                 <DatePicker
                   id="invoiceSentDate"
@@ -394,6 +278,11 @@ export default function LegalQualification({
                     handleDateChange("invoiceSentDate", date)
                   }
                   placeholder="Select date"
+                  maxDate={(() => {
+                    const thirtyDaysAgo = new Date();
+                    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+                    return thirtyDaysAgo;
+                  })()}
                   className={
                     errors.invoiceSentDate
                       ? "border-destructive bg-destructive/5"
@@ -401,7 +290,8 @@ export default function LegalQualification({
                   }
                 />
                 <p className="text-xs text-muted-foreground mt-1">
-                  When was the invoice delivered?
+                  When was the invoice sent to the client? (Must be at least 30
+                  days ago)
                 </p>
                 {errors.invoiceSentDate && (
                   <p className="mt-1 text-xs text-destructive flex items-center gap-1">

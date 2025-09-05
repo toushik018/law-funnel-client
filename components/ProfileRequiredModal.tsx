@@ -1,4 +1,12 @@
 import React from "react";
+import {
+  User,
+  Building2,
+  Phone,
+  CreditCard,
+  FileText,
+  AlertCircle,
+} from "lucide-react";
 
 interface ProfileRequiredModalProps {
   isOpen: boolean;
@@ -12,59 +20,94 @@ export default function ProfileRequiredModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50 flex items-center justify-center">
-      <div className="relative bg-white rounded-lg shadow-xl max-w-md w-full mx-4 p-6 animate-fade-in">
-        {/* Icon */}
-        <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 bg-blue-100 rounded-full">
-          <svg
-            className="w-8 h-8 text-blue-600"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-            />
-          </svg>
-        </div>
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+      <div className="relative bg-card rounded-xl shadow-2xl max-w-lg w-full animate-fade-in border border-border">
+        {/* Header */}
+        <div className="p-6 pb-4">
+          <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 bg-primary/10 rounded-full">
+            <User className="w-8 h-8 text-primary" />
+          </div>
 
-        {/* Title */}
-        <h3 className="text-xl font-semibold text-gray-900 text-center mb-4">
-          Complete Your Profile
-        </h3>
+          <h3 className="text-2xl font-bold text-foreground text-center mb-2">
+            Complete Your Profile
+          </h3>
 
-        {/* Message */}
-        <div className="text-center mb-6">
-          <p className="text-gray-600 mb-3">
+          <p className="text-muted-foreground text-center text-sm">
             To continue using Law Funnel, please complete your profile
-            information including:
-          </p>
-          <ul className="text-sm text-gray-500 space-y-1">
-            <li>• Company details</li>
-            <li>• Contact information</li>
-            <li>• Banking information</li>
-            <li>• Legal firm details</li>
-          </ul>
-        </div>
-
-        {/* Note */}
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-6">
-          <p className="text-sm text-blue-800">
-            <span className="font-medium">Note:</span> This information is
-            required to generate proper legal notices and invoices.
+            information
           </p>
         </div>
 
-        {/* Button */}
-        <div className="flex justify-center">
+        {/* Content */}
+        <div className="px-6 pb-4">
+          <div className="grid grid-cols-2 gap-3 mb-6">
+            <div className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg">
+              <div className="p-1.5 bg-primary/10 rounded-md">
+                <Building2 className="w-4 h-4 text-primary" />
+              </div>
+              <div>
+                <p className="text-xs font-medium text-foreground">Company</p>
+                <p className="text-xs text-muted-foreground">
+                  Business details
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg">
+              <div className="p-1.5 bg-accent/50 rounded-md">
+                <Phone className="w-4 h-4 text-accent-foreground" />
+              </div>
+              <div>
+                <p className="text-xs font-medium text-foreground">Contact</p>
+                <p className="text-xs text-muted-foreground">Address & phone</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg">
+              <div className="p-1.5 bg-secondary/50 rounded-md">
+                <CreditCard className="w-4 h-4 text-secondary-foreground" />
+              </div>
+              <div>
+                <p className="text-xs font-medium text-foreground">Banking</p>
+                <p className="text-xs text-muted-foreground">Payment details</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg">
+              <div className="p-1.5 bg-destructive/10 rounded-md">
+                <FileText className="w-4 h-4 text-destructive" />
+              </div>
+              <div>
+                <p className="text-xs font-medium text-foreground">Legal</p>
+                <p className="text-xs text-muted-foreground">
+                  Firm information
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Important Note */}
+          <div className="flex items-start gap-3 p-4 bg-amber-50 border border-amber-200 rounded-lg mb-6">
+            <AlertCircle className="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" />
+            <div>
+              <p className="text-sm font-medium text-amber-800 mb-1">
+                Important
+              </p>
+              <p className="text-sm text-amber-700">
+                This information is required to generate proper legal notices
+                and invoices.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="p-6 pt-0">
           <button
             onClick={onContinue}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3 px-4 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 shadow-sm hover:shadow-md"
           >
-            Continue to Profile
+            Continue to Profile Setup
           </button>
         </div>
       </div>

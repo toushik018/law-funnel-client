@@ -439,29 +439,7 @@ export default function CaseHistory({ onNavigateBack }: CaseHistoryProps) {
                                       }
                                     </p>
                                   </div>
-                                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                                    <div className="bg-card p-3 rounded border border-border/50">
-                                      <h5 className="font-medium text-foreground mb-1 text-sm">
-                                        Fulfillment Date
-                                      </h5>
-                                      <p className="text-muted-foreground text-sm">
-                                        {formatDate(
-                                          case_.legalQualificationAnswers
-                                            .fulfillmentDate
-                                        )}
-                                      </p>
-                                    </div>
-                                    <div className="bg-card p-3 rounded border border-border/50">
-                                      <h5 className="font-medium text-foreground mb-1 text-sm">
-                                        Invoice Written
-                                      </h5>
-                                      <p className="text-muted-foreground text-sm">
-                                        {formatDate(
-                                          case_.legalQualificationAnswers
-                                            .invoiceWrittenDate
-                                        )}
-                                      </p>
-                                    </div>
+                                  <div className="grid grid-cols-1 gap-3">
                                     <div className="bg-card p-3 rounded border border-border/50">
                                       <h5 className="font-medium text-foreground mb-1 text-sm">
                                         Invoice Sent

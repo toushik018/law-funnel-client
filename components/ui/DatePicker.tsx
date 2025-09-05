@@ -11,6 +11,8 @@ interface DatePickerProps {
   disabled?: boolean;
   className?: string;
   id?: string;
+  minDate?: Date;
+  maxDate?: Date;
 }
 
 export function DatePicker({
@@ -20,6 +22,8 @@ export function DatePicker({
   disabled = false,
   className,
   id,
+  minDate,
+  maxDate,
 }: DatePickerProps) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -57,6 +61,11 @@ export function DatePicker({
             }}
             className="rounded-md border-0 shadow-none"
             captionLayout="dropdown"
+            disabled={(day) => {
+              if (minDate && day < minDate) return true;
+              if (maxDate && day > maxDate) return true;
+              return false;
+            }}
           />
         </div>
       )}

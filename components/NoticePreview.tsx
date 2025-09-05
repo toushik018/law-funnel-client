@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import DocumentIcon from "./icons/DocumentIcon";
 import { PaymentNoticeContent, CompanyDetails, InvoiceData } from "../types";
 import DownloadIcon from "./icons/DownloadIcon";
+import { generatePaymentNoticePDF } from "../utils/pdfGenerator";
 
 interface NoticePreviewProps {
   noticeContent: PaymentNoticeContent;
@@ -31,69 +32,109 @@ const NoticePreview: React.FC<NoticePreviewProps> = ({
   };
 
   const handleDownloadPdf = async () => {
-    const element = noticeRef.current;
-    if (!element) {
-      alert("Der zu druckende Inhalt konnte nicht gefunden werden.");
-      return;
-    }
-
     setIsDownloading(true);
 
-    const placeholders = Array.from(
-      element.querySelectorAll<HTMLElement>(".placeholder-span")
-    );
-    const originalStyles = placeholders.map((p) => p.style.cssText);
-
-    placeholders.forEach((p) => {
-      p.style.backgroundColor = "transparent";
-      p.style.color = "inherit";
-      p.style.padding = "0";
-      p.style.margin = "0";
-      p.style.borderRadius = "0";
-      p.style.display = "inline";
-      p.style.fontWeight = "normal";
-    });
-
     try {
-      const { jsPDF } = jspdf;
-      const doc = new jsPDF({
-        orientation: "p",
-        unit: "pt",
-        format: "a4",
-        putOnlyUsedFonts: true,
-      });
-
-      await doc.html(element, {
-        margin: [60, 60, 60, 60], // [top, right, bottom, left] in points
-        autoPaging: "text",
-        width: 475, // A4 width (595pt) - margins (60 + 60)
-        windowWidth: element.scrollWidth,
-      });
-
-      doc.save(`Mahnung_${invoiceData.invoiceNumber}.pdf`);
+      await generatePaymentNoticePDF(
+        noticeContent,
+        ownCompanyDetails,
+        invoiceData
+      );
     } catch (error) {
       console.error("PDF generation failed:", error);
       alert(
         "Entschuldigung, beim Erstellen der PDF-Datei ist ein Fehler aufgetreten."
       );
     } finally {
-      placeholders.forEach((p, i) => (p.style.cssText = originalStyles[i]));
       setIsDownloading(false);
     }
   };
 
   const getCityFromAddress = (address: string): string => {
     if (!address) return "";
+
+    // Strategy 1: Full German format (12345 Berlin)
     const postalCodeMatch = address.match(/\d{5}\s+([a-zA-Z\säöüÄÖÜß.-]+)$/);
     if (postalCodeMatch && postalCodeMatch[1]) {
       return postalCodeMatch[1].trim();
     }
+
+    // Strategy 2: Comma-separated format (Street, City)
     const commaParts = address.split(",");
     if (commaParts.length > 1) {
       const lastPart = commaParts[commaParts.length - 1].trim();
       const cityOnly = lastPart.replace(/\d+/g, "").trim();
-      if (cityOnly) return cityOnly;
+      if (cityOnly && cityOnly.length > 2) return cityOnly;
     }
+
+    // Strategy 3: Known German city names (common cities)
+    const commonGermanCities = [
+      "Berlin",
+      "Hamburg",
+      "München",
+      "Köln",
+      "Frankfurt",
+      "Stuttgart",
+      "Düsseldorf",
+      "Dortmund",
+      "Essen",
+      "Leipzig",
+      "Bremen",
+      "Dresden",
+      "Hannover",
+      "Nürnberg",
+      "Duisburg",
+      "Bochum",
+      "Wuppertal",
+      "Bielefeld",
+      "Bonn",
+      "Münster",
+      "Karlsruhe",
+      "Mannheim",
+      "Augsburg",
+      "Wiesbaden",
+      "Gelsenkirchen",
+      "Mönchengladbach",
+      "Braunschweig",
+      "Chemnitz",
+      "Kiel",
+      "Aachen",
+      "Halle",
+      "Magdeburg",
+      "Freiburg",
+    ];
+
+    for (const city of commonGermanCities) {
+      if (address.toLowerCase().includes(city.toLowerCase())) {
+        return city;
+      }
+    }
+
+    // Strategy 4: Intelligent word extraction
+    const words = address.split(/[\s,.-]+/).filter((word) => {
+      const lowerWord = word.toLowerCase();
+      return (
+        word.length > 2 &&
+        !/^\d+$/.test(word) && // Not just numbers
+        !/^\d{5}$/.test(word) && // Not postal code
+        !/(^str$|^straße$|^allee$|^weg$|^platz$|^gasse$|^ring$|^damm$)$/i.test(
+          word
+        ) && // Not street indicators
+        !/^(nr|no|nummer)$/i.test(word)
+      ); // Not number indicators
+    });
+
+    if (words.length > 0) {
+      return words[words.length - 1];
+    }
+
+    // Strategy 5: Use the full address as location identifier for partial addresses
+    const cleanAddress = address.trim();
+    if (cleanAddress.length > 0 && cleanAddress.length <= 50) {
+      // For short addresses like "Herderstr. 11", use them as location identifier
+      return cleanAddress;
+    }
+
     return "";
   };
 
@@ -118,6 +159,7 @@ const NoticePreview: React.FC<NoticePreviewProps> = ({
             }}
           >
             <div
+              data-pdf-header
               style={{
                 fontSize: "9pt",
                 borderBottom: "1px solid #e2e8f0",
@@ -146,7 +188,7 @@ const NoticePreview: React.FC<NoticePreviewProps> = ({
             >
               <tbody>
                 <tr>
-                  <td style={{ width: "60%" }}>
+                  <td data-pdf-address style={{ width: "60%" }}>
                     <p style={{ margin: 0 }}>An</p>
                     <p style={{ fontWeight: "bold", margin: 0 }}>
                       {invoiceData.clientName}
@@ -160,7 +202,7 @@ const NoticePreview: React.FC<NoticePreviewProps> = ({
                       ))}
                     </div>
                   </td>
-                  <td style={{ textAlign: "right" }}>
+                  <td data-pdf-date style={{ textAlign: "right" }}>
                     <p style={{ margin: 0 }}>
                       <strong>Ort:</strong>{" "}
                       {city ? (
@@ -183,6 +225,7 @@ const NoticePreview: React.FC<NoticePreviewProps> = ({
             </table>
 
             <p
+              data-pdf-subject
               style={{
                 fontWeight: "bold",
                 color: "#1e293b",
@@ -208,6 +251,7 @@ const NoticePreview: React.FC<NoticePreviewProps> = ({
             ))}
 
             <div
+              data-pdf-demands-box
               style={{
                 margin: "2rem 0",
                 backgroundColor: "#f8fafc",
@@ -217,6 +261,7 @@ const NoticePreview: React.FC<NoticePreviewProps> = ({
               }}
             >
               <p
+                data-pdf-demands-title
                 style={{
                   fontWeight: "600",
                   fontStyle: "italic",
@@ -338,7 +383,7 @@ const NoticePreview: React.FC<NoticePreviewProps> = ({
               </div>
             </div>
 
-            <p style={{ marginBottom: "1rem" }}>Mit freundlichen Grüßen,</p>
+            <p style={{ marginBottom: "0.4rem" }}>Mit freundlichen Grüßen,</p>
 
             <div
               style={{ marginTop: "1rem", fontSize: "10pt", color: "#475569" }}

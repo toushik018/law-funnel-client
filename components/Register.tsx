@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { AuthService } from "../services/authService";
 import { useAuthStore } from "@/stores/authStore";
+import { User, Mail, Lock, Shield, Check } from "lucide-react";
 import TermsAndConditions from "./TermsAndConditions";
 
 interface RegisterProps {
@@ -66,158 +67,206 @@ export default function Register({ onSwitchToLogin }: RegisterProps) {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Create your account
-          </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
+    <div className="min-h-screen bg-background flex items-center justify-center p-4">
+      <div className="w-full max-w-md">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 bg-primary rounded-xl">
+            <Shield className="w-8 h-8 text-primary-foreground" />
+          </div>
+
+          <h1 className="text-3xl font-bold text-foreground mb-2">
+            Create Account
+          </h1>
+          <p className="text-muted-foreground">
             Join Law Funnel to process legal documents
           </p>
         </div>
 
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
-              {error}
-            </div>
-          )}
+        {/* Form Card */}
+        <div className="bg-card rounded-xl border border-border p-8 shadow-lg">
+          <form className="space-y-6" onSubmit={handleSubmit}>
+            {error && (
+              <div className="flex items-center gap-3 p-4 bg-destructive/10 border border-destructive/20 rounded-lg">
+                <div className="w-5 h-5 bg-destructive rounded-full flex items-center justify-center flex-shrink-0">
+                  <span className="text-destructive-foreground text-xs font-bold">
+                    !
+                  </span>
+                </div>
+                <p className="text-sm text-destructive font-medium">{error}</p>
+              </div>
+            )}
 
-          <div className="space-y-4">
-            <div>
+            {/* Name Field */}
+            <div className="space-y-2">
               <label
                 htmlFor="name"
-                className="block text-sm font-medium text-gray-700"
+                className="text-sm font-medium text-foreground"
               >
                 Full Name
               </label>
-              <input
-                id="name"
-                name="name"
-                type="text"
-                autoComplete="name"
-                required
-                className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                placeholder="Enter your full name"
-                value={formData.name}
-                onChange={handleChange}
-              />
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <User className="h-5 w-5 text-muted-foreground" />
+                </div>
+                <input
+                  id="name"
+                  name="name"
+                  type="text"
+                  autoComplete="name"
+                  required
+                  className="w-full pl-10 pr-4 py-3 bg-input border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-primary transition-all placeholder:text-muted-foreground"
+                  placeholder="Enter your full name"
+                  value={formData.name}
+                  onChange={handleChange}
+                />
+              </div>
             </div>
 
-            <div>
+            {/* Email Field */}
+            <div className="space-y-2">
               <label
                 htmlFor="email"
-                className="block text-sm font-medium text-gray-700"
+                className="text-sm font-medium text-foreground"
               >
                 Email Address
               </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                placeholder="Enter your email"
-                value={formData.email}
-                onChange={handleChange}
-              />
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Mail className="h-5 w-5 text-muted-foreground" />
+                </div>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  className="w-full pl-10 pr-4 py-3 bg-input border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-primary transition-all placeholder:text-muted-foreground"
+                  placeholder="Enter your email"
+                  value={formData.email}
+                  onChange={handleChange}
+                />
+              </div>
             </div>
 
-            <div>
+            {/* Password Field */}
+            <div className="space-y-2">
               <label
                 htmlFor="password"
-                className="block text-sm font-medium text-gray-700"
+                className="text-sm font-medium text-foreground"
               >
                 Password
               </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="new-password"
-                required
-                className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                placeholder="Create a password"
-                value={formData.password}
-                onChange={handleChange}
-              />
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Lock className="h-5 w-5 text-muted-foreground" />
+                </div>
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  autoComplete="new-password"
+                  required
+                  className="w-full pl-10 pr-4 py-3 bg-input border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-primary transition-all placeholder:text-muted-foreground"
+                  placeholder="Create a password"
+                  value={formData.password}
+                  onChange={handleChange}
+                />
+              </div>
             </div>
 
-            <div>
+            {/* Confirm Password Field */}
+            <div className="space-y-2">
               <label
                 htmlFor="confirmPassword"
-                className="block text-sm font-medium text-gray-700"
+                className="text-sm font-medium text-foreground"
               >
                 Confirm Password
               </label>
-              <input
-                id="confirmPassword"
-                name="confirmPassword"
-                type="password"
-                autoComplete="new-password"
-                required
-                className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                placeholder="Confirm your password"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-              />
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Lock className="h-5 w-5 text-muted-foreground" />
+                </div>
+                <input
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type="password"
+                  autoComplete="new-password"
+                  required
+                  className="w-full pl-10 pr-4 py-3 bg-input border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-primary transition-all placeholder:text-muted-foreground"
+                  placeholder="Confirm your password"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                />
+              </div>
             </div>
 
-            {/* Terms and Conditions Checkbox */}
-            <div className="flex items-start">
-              <div className="flex items-center h-5">
+            {/* Terms and Conditions */}
+            <div className="flex items-start gap-3 p-4 bg-muted/50 rounded-lg">
+              <div className="flex items-center h-5 mt-0.5">
                 <input
                   id="terms"
                   name="terms"
                   type="checkbox"
                   checked={acceptedTerms}
                   onChange={(e) => setAcceptedTerms(e.target.checked)}
-                  className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                  className="h-4 w-4 rounded border-border text-primary focus:ring-ring focus:ring-2 focus:ring-offset-0"
                   required
                 />
               </div>
-              <div className="ml-3 text-sm">
-                <label htmlFor="terms" className="font-medium text-gray-700">
+              <div className="text-sm">
+                <label
+                  htmlFor="terms"
+                  className="font-medium text-foreground cursor-pointer"
+                >
                   I agree to the{" "}
                   <button
                     type="button"
                     onClick={() => setShowTerms(true)}
-                    className="text-indigo-600 hover:text-indigo-500 underline"
+                    className="text-primary hover:text-primary/80 underline-offset-4 hover:underline"
                   >
                     Terms and Conditions
                   </button>
-                  <span className="text-red-500 ml-1">*</span>
+                  <span className="text-destructive ml-1">*</span>
                 </label>
-                <p className="text-gray-500 text-xs mt-1">
+                <p className="text-muted-foreground text-xs mt-1">
                   You must read and accept our terms and conditions before
                   creating an account.
                 </p>
               </div>
             </div>
-          </div>
 
-          <div>
+            {/* Submit Button */}
             <button
               type="submit"
               disabled={isLoading || !acceptedTerms}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3 px-4 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md"
             >
-              {isLoading ? "Creating account..." : "Create account"}
+              {isLoading ? (
+                <div className="flex items-center justify-center gap-2">
+                  <div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
+                  <span>Creating account...</span>
+                </div>
+              ) : (
+                "Create Account"
+              )}
             </button>
-          </div>
 
-          <div className="text-center">
-            <button
-              type="button"
-              onClick={onSwitchToLogin}
-              className="text-indigo-600 hover:text-indigo-500"
-            >
-              Already have an account? Sign in
-            </button>
-          </div>
-        </form>
+            {/* Switch to Login */}
+            <div className="text-center pt-4">
+              <p className="text-sm text-muted-foreground">
+                Already have an account?{" "}
+                <button
+                  type="button"
+                  onClick={onSwitchToLogin}
+                  className="font-medium text-primary hover:text-primary/80 transition-colors underline-offset-4 hover:underline"
+                >
+                  Sign in
+                </button>
+              </p>
+            </div>
+          </form>
+        </div>
 
         {/* Terms and Conditions Modal */}
         <TermsAndConditions
