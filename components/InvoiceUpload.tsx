@@ -39,11 +39,12 @@ export default function InvoiceUpload({
             </svg>
           </div>
           <h2 className="text-lg font-semibold text-foreground">
-            Upload Invoice
+            Rechnung hochladen
           </h2>
         </div>
         <p className="text-xs text-muted-foreground">
-          Upload the invoice PDF to generate a legally-binding payment notice.
+          Laden Sie die Rechnung als PDF hoch, um eine rechtsgültige
+          Zahlungsaufforderung zu erstellen.
         </p>
       </div>
 
@@ -57,12 +58,13 @@ export default function InvoiceUpload({
           />
           <div>
             <p className="text-xs font-medium text-warning-foreground mb-1">
-              Legal Confirmation Required
+              Rechtliche Bestätigung erforderlich
             </p>
             <p className="text-xs text-warning-foreground/80 leading-relaxed">
-              I confirm that all information in this invoice (including amount,
-              payment terms, and recipient details) is complete and accurate,
-              and I am responsible for its legal correctness.
+              Ich bestätige, dass alle Angaben in dieser Rechnung
+              (einschließlich Betrag, Zahlungsziel und Empfängerdaten)
+              vollständig und richtig sind und dass ich für deren rechtliche
+              Korrektheit selbst verantwortlich bin.
             </p>
           </div>
         </label>
@@ -90,12 +92,12 @@ export default function InvoiceUpload({
           </svg>
           <div>
             <p className="text-xs font-medium text-foreground mb-1">
-              How it works
+              So funktioniert es
             </p>
             <p className="text-xs text-muted-foreground leading-relaxed">
-              Customer details (name and address) are automatically extracted
-              from your PDF invoice. You can review and edit them after the
-              analysis is complete.
+              Kundendetails (Name und Adresse) werden automatisch aus Ihrer
+              PDF-Rechnung extrahiert. Sie können diese nach Abschluss der
+              Analyse überprüfen und bearbeiten.
             </p>
           </div>
         </div>
@@ -107,7 +109,7 @@ export default function InvoiceUpload({
           onClick={onBack}
           className="px-4 py-1.5 border border-border text-muted-foreground rounded-md hover:bg-muted/50 transition-colors text-sm"
         >
-          Back
+          Zurück
         </button>
       </div>
     </div>

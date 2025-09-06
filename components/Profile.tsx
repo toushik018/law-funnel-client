@@ -17,6 +17,7 @@ import {
   X,
   CheckCircle,
 } from "lucide-react";
+import PhoneInput from "./PhoneInput";
 
 interface ProfileProps {
   onNavigateBack?: () => void;
@@ -64,10 +65,10 @@ export default function Profile({ onNavigateBack }: ProfileProps) {
     try {
       const response = await AuthService.updateProfile(formData);
       setUser(response.data);
-      setSuccess("✅ Profile updated successfully!");
+      setSuccess("✅ Profil erfolgreich aktualisiert!");
       setIsEditing(false);
     } catch (err: any) {
-      setError(err.message || "Failed to update profile");
+      setError(err.message || "Profil konnte nicht aktualisiert werden");
     } finally {
       setLoading(false);
     }
@@ -79,6 +80,13 @@ export default function Profile({ onNavigateBack }: ProfileProps) {
     setFormData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handlePhoneChange = (value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      phone: value,
     }));
   };
 
@@ -120,15 +128,15 @@ export default function Profile({ onNavigateBack }: ProfileProps) {
               className="flex items-center gap-2 px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground hover:bg-muted rounded-md transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />
-              Back
+              Zurück
             </button>
 
             <div className="text-center">
               <h1 className="text-xl font-bold text-foreground">
-                Profile Dashboard
+                Profil Dashboard
               </h1>
               <p className="text-muted-foreground text-xs">
-                Manage your information
+                Verwalten Sie Ihre Informationen
               </p>
             </div>
 
@@ -138,7 +146,7 @@ export default function Profile({ onNavigateBack }: ProfileProps) {
                 className="flex items-center gap-2 px-4 py-1.5 bg-primary text-primary-foreground text-sm rounded-md hover:bg-primary/90 transition-colors"
               >
                 <Edit3 className="w-4 h-4" />
-                Edit
+                Bearbeiten
               </button>
             )}
           </div>
@@ -180,16 +188,18 @@ export default function Profile({ onNavigateBack }: ProfileProps) {
               </div>
               <div>
                 <h2 className="text-sm font-semibold text-card-foreground">
-                  Personal
+                  Persönlich
                 </h2>
-                <p className="text-muted-foreground text-xs">Basic details</p>
+                <p className="text-muted-foreground text-xs">
+                  Grundlegende Angaben
+                </p>
               </div>
             </div>
             <div className="space-y-3">
               <input
                 name="name"
                 disabled={!isEditing}
-                placeholder="Full Name"
+                placeholder="Vollständiger Name"
                 className="w-full bg-input border border-border px-3 py-2 text-sm rounded-md disabled:bg-muted disabled:text-muted-foreground focus:ring-1 focus:ring-ring focus:border-primary transition-colors placeholder:text-muted-foreground"
                 value={formData.name}
                 onChange={handleChange}
@@ -198,7 +208,7 @@ export default function Profile({ onNavigateBack }: ProfileProps) {
                 name="email"
                 type="email"
                 disabled={!isEditing}
-                placeholder="Email Address"
+                placeholder="E-Mail-Adresse"
                 className="w-full bg-input border border-border px-3 py-2 text-sm rounded-md disabled:bg-muted disabled:text-muted-foreground focus:ring-1 focus:ring-ring focus:border-primary transition-colors placeholder:text-muted-foreground"
                 value={formData.email}
                 onChange={handleChange}
@@ -214,15 +224,17 @@ export default function Profile({ onNavigateBack }: ProfileProps) {
               </div>
               <div>
                 <h2 className="text-sm font-semibold text-card-foreground">
-                  Company
+                  Unternehmen
                 </h2>
-                <p className="text-muted-foreground text-xs">Business info</p>
+                <p className="text-muted-foreground text-xs">
+                  Geschäftsinformationen
+                </p>
               </div>
             </div>
             <input
               name="company"
               disabled={!isEditing}
-              placeholder="Company Name"
+              placeholder="Firmenname"
               className="w-full bg-input border border-border px-3 py-2 text-sm rounded-md disabled:bg-muted disabled:text-muted-foreground focus:ring-1 focus:ring-ring focus:border-primary transition-colors placeholder:text-muted-foreground"
               value={formData.company}
               onChange={handleChange}
@@ -238,9 +250,11 @@ export default function Profile({ onNavigateBack }: ProfileProps) {
             </div>
             <div>
               <h2 className="text-sm font-semibold text-card-foreground">
-                Contact
+                Kontakt
               </h2>
-              <p className="text-muted-foreground text-xs">How to reach you</p>
+              <p className="text-muted-foreground text-xs">
+                Wie man Sie erreicht
+              </p>
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -248,7 +262,7 @@ export default function Profile({ onNavigateBack }: ProfileProps) {
               <textarea
                 name="address"
                 disabled={!isEditing}
-                placeholder="Full Address"
+                placeholder="Vollständige Adresse"
                 rows={2}
                 className="w-full bg-input border border-border px-3 py-2 text-sm rounded-md disabled:bg-muted disabled:text-muted-foreground focus:ring-1 focus:ring-ring focus:border-primary transition-colors placeholder:text-muted-foreground resize-none"
                 value={formData.address}
@@ -256,16 +270,12 @@ export default function Profile({ onNavigateBack }: ProfileProps) {
               />
             </div>
             <div className="relative">
-              <div className="absolute left-3 top-1/4">
-                <Phone className="w-3 h-3 text-muted-foreground" />
-              </div>
-              <input
-                name="phone"
-                disabled={!isEditing}
-                placeholder="+1 (555) 123-4567"
-                className="w-full bg-input border border-border pl-9 pr-3 py-2 text-sm rounded-md disabled:bg-muted disabled:text-muted-foreground focus:ring-1 focus:ring-ring focus:border-primary transition-colors placeholder:text-muted-foreground"
+              <PhoneInput
                 value={formData.phone}
-                onChange={handleChange}
+                onChange={handlePhoneChange}
+                disabled={!isEditing}
+                placeholder="Telefonnummer eingeben"
+                defaultCountry="DE"
               />
             </div>
           </div>
@@ -284,7 +294,7 @@ export default function Profile({ onNavigateBack }: ProfileProps) {
                   Banking
                 </h2>
                 <p className="text-muted-foreground text-xs">
-                  Financial details
+                  Finanzielle Details
                 </p>
               </div>
             </div>
@@ -292,7 +302,7 @@ export default function Profile({ onNavigateBack }: ProfileProps) {
               <input
                 name="bankName"
                 disabled={!isEditing}
-                placeholder="Bank Name"
+                placeholder="Bankname"
                 className="w-full bg-input border border-border px-3 py-2 text-sm rounded-md disabled:bg-muted disabled:text-muted-foreground focus:ring-1 focus:ring-ring focus:border-primary transition-colors placeholder:text-muted-foreground"
                 value={formData.bankName}
                 onChange={handleChange}
@@ -326,17 +336,17 @@ export default function Profile({ onNavigateBack }: ProfileProps) {
               </div>
               <div>
                 <h2 className="text-sm font-semibold text-card-foreground">
-                  Legal
+                  Rechtliches
                 </h2>
                 <p className="text-muted-foreground text-xs">
-                  Legal information
+                  Rechtliche Informationen
                 </p>
               </div>
             </div>
             <input
               name="lawFirm"
               disabled={!isEditing}
-              placeholder="Law Firm / Collection Agency"
+              placeholder="Anwaltskanzlei / Inkassobüro"
               className="w-full bg-input border border-border px-3 py-2 text-sm rounded-md disabled:bg-muted disabled:text-muted-foreground focus:ring-1 focus:ring-ring focus:border-primary transition-colors placeholder:text-muted-foreground"
               value={formData.lawFirm}
               onChange={handleChange}
@@ -353,7 +363,7 @@ export default function Profile({ onNavigateBack }: ProfileProps) {
               className="flex items-center gap-1.5 px-4 py-2 bg-secondary text-secondary-foreground text-sm rounded-md hover:bg-secondary/80 transition-colors"
             >
               <X className="w-4 h-4" />
-              Cancel
+              Abbrechen
             </button>
             <button
               type="submit"
@@ -361,7 +371,7 @@ export default function Profile({ onNavigateBack }: ProfileProps) {
               className="flex items-center gap-1.5 px-4 py-2 bg-primary text-primary-foreground text-sm rounded-md hover:bg-primary/90 disabled:opacity-50 transition-colors"
             >
               <Check className="w-4 h-4" />
-              {isLoading ? "Saving..." : "Save"}
+              {isLoading ? "Speichere..." : "Speichern"}
             </button>
           </div>
         )}

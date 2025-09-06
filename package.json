@@ -24,6 +24,7 @@
     "react-signature-canvas": "^1.1.0-alpha.2",
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
+    "world-countries": "^5.1.0",
     "zustand": "^5.0.8"
   },
   "devDependencies": {

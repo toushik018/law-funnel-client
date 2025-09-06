@@ -106,17 +106,21 @@ export default function DigitalSignature({
     setLocalError("");
 
     if (!hasSignature || !signatureRef.current) {
-      setLocalError("Please provide your digital signature");
+      setLocalError(
+        "Bitte stellen Sie Ihre digitale Unterschrift zur Verfügung"
+      );
       return;
     }
 
     if (!powerOfAttorneyConfirmed) {
-      setLocalError("You must confirm the power of attorney agreement");
+      setLocalError("Sie müssen die Vollmachtsvereinbarung bestätigen");
       return;
     }
 
     if (signatureRef.current.isEmpty()) {
-      setLocalError("Please provide your digital signature");
+      setLocalError(
+        "Bitte stellen Sie Ihre digitale Unterschrift zur Verfügung"
+      );
       return;
     }
 
@@ -139,7 +143,9 @@ export default function DigitalSignature({
     } catch (error) {
       console.error("Failed to save signature status:", error);
       // Error is handled by the store, but we show additional feedback
-      setLocalError("Failed to save signature status. Please try again.");
+      setLocalError(
+        "Unterschriftsstatus konnte nicht gespeichert werden. Bitte versuchen Sie es erneut."
+      );
     }
   };
 
@@ -163,12 +169,12 @@ export default function DigitalSignature({
             </svg>
           </div>
           <h2 className="text-lg font-semibold text-foreground">
-            Digital Signature & Power of Attorney
+            Digitale Unterschrift & Vollmacht
           </h2>
         </div>
         <p className="text-xs text-muted-foreground">
-          Sign digitally to confirm power of attorney and authorize the creation
-          of legally-binding payment notices.
+          Unterschreiben Sie digital, um die Vollmacht zu bestätigen und die
+          Erstellung rechtsgültiger Zahlungsaufforderungen zu autorisieren.
         </p>
       </div>
 
@@ -190,7 +196,7 @@ export default function DigitalSignature({
                 />
               </svg>
               <div>
-                <p className="text-xs font-medium text-red-800">Error</p>
+                <p className="text-xs font-medium text-red-800">Fehler</p>
                 <p className="text-xs text-red-700 mt-0.5">
                   {error || localError}
                 </p>
@@ -217,10 +223,11 @@ export default function DigitalSignature({
               </svg>
               <div>
                 <p className="text-xs font-medium text-emerald-800">
-                  Signature Completed
+                  Unterschrift abgeschlossen
                 </p>
                 <p className="text-xs text-emerald-700 mt-0.5">
-                  Digital signature status has been saved to your case.
+                  Der digitale Unterschriftsstatus wurde in Ihrem Fall
+                  gespeichert.
                 </p>
               </div>
             </div>
@@ -229,7 +236,7 @@ export default function DigitalSignature({
 
         <div>
           <label className="block text-xs font-medium text-foreground mb-2">
-            Digital Signature <span className="text-red-500">*</span>
+            Digitale Unterschrift <span className="text-red-500">*</span>
           </label>
           <div
             ref={containerRef}
@@ -268,14 +275,14 @@ export default function DigitalSignature({
             </div>
             <div className="flex justify-between items-center mt-2 px-1">
               <p className="text-xs text-muted-foreground">
-                Sign above using your mouse or touch device
+                Unterschreiben Sie oben mit Ihrer Maus oder Ihrem Touchgerät
               </p>
               <button
                 type="button"
                 onClick={clearSignature}
                 className="text-xs text-emerald-600 hover:text-emerald-800 underline"
               >
-                Clear Signature
+                Unterschrift löschen
               </button>
             </div>
           </div>
@@ -291,15 +298,16 @@ export default function DigitalSignature({
             />
             <div>
               <p className="text-xs font-medium text-amber-800">
-                I confirm and agree to the Power of Attorney{" "}
+                Ich bestätige und stimme der Vollmacht zu{" "}
                 <span className="text-red-500">*</span>
               </p>
               <p className="text-xs text-amber-700 mt-0.5">
-                By checking this box and providing my digital signature, I
-                legally authorize LegalTech Solutions Inc. to act on my behalf
-                for the creation and enforcement of payment notices. I
-                understand the legal implications and confirm I have the
-                authority to grant this power of attorney.
+                Durch das Ankreuzen dieses Kästchens und das Bereitstellen
+                meiner digitalen Unterschrift autorisiere ich LegalTech
+                Solutions Inc. rechtlich, in meinem Namen für die Erstellung und
+                Durchsetzung von Zahlungsaufforderungen zu handeln. Ich verstehe
+                die rechtlichen Konsequenzen und bestätige, dass ich die
+                Befugnis habe, diese Vollmacht zu erteilen.
               </p>
             </div>
           </label>
@@ -322,12 +330,13 @@ export default function DigitalSignature({
             </svg>
             <div>
               <p className="text-xs font-medium text-red-800">
-                Legal Responsibility
+                Rechtliche Verantwortung
               </p>
               <p className="text-xs text-red-700 mt-0.5">
-                Your digital signature creates a legally-binding agreement. You
-                are responsible for the accuracy of all provided information and
-                the legal consequences of authorized actions.
+                Ihre digitale Unterschrift erstellt eine rechtlich bindende
+                Vereinbarung. Sie sind verantwortlich für die Richtigkeit aller
+                bereitgestellten Informationen und die rechtlichen Konsequenzen
+                autorisierter Handlungen.
               </p>
             </div>
           </div>
@@ -339,7 +348,7 @@ export default function DigitalSignature({
             onClick={onBack}
             className="px-4 py-2 border border-border text-muted-foreground rounded-lg hover:bg-muted transition-colors text-sm"
           >
-            Back
+            Zurück
           </button>
           <button
             type="button"
@@ -373,7 +382,9 @@ export default function DigitalSignature({
               </svg>
             )}
             <span>
-              {loading ? "Saving..." : "Complete Authorization & Continue"}
+              {loading
+                ? "Speichere..."
+                : "Autorisierung abschließen & Fortfahren"}
             </span>
           </button>
         </div>

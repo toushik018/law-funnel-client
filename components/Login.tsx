@@ -25,7 +25,7 @@ export default function Login({ onSwitchToRegister }: LoginProps) {
       const response = await AuthService.login(formData);
       login(response.data.user); // Only pass user, no token
     } catch (err: any) {
-      setError(err.message || "Login failed");
+      setError(err.message || "Anmeldung fehlgeschlagen");
     } finally {
       setLoading(false);
     }
@@ -48,10 +48,11 @@ export default function Login({ onSwitchToRegister }: LoginProps) {
           </div>
 
           <h1 className="text-3xl font-bold text-foreground mb-2">
-            Welcome Back
+            Willkommen zurück
           </h1>
           <p className="text-muted-foreground">
-            Sign in to access your legal document processing platform
+            Melden Sie sich an, um auf Ihre
+            Rechtsdokument-Verarbeitungsplattform zuzugreifen
           </p>
         </div>
 
@@ -75,7 +76,7 @@ export default function Login({ onSwitchToRegister }: LoginProps) {
                 htmlFor="email"
                 className="text-sm font-medium text-foreground"
               >
-                Email Address
+                Email-Adresse
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -88,7 +89,7 @@ export default function Login({ onSwitchToRegister }: LoginProps) {
                   autoComplete="email"
                   required
                   className="w-full pl-10 pr-4 py-3 bg-input border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-primary transition-all placeholder:text-muted-foreground"
-                  placeholder="Enter your email address"
+                  placeholder="Geben Sie Ihre E-Mail-Adresse ein"
                   value={formData.email}
                   onChange={handleChange}
                 />
@@ -101,7 +102,7 @@ export default function Login({ onSwitchToRegister }: LoginProps) {
                 htmlFor="password"
                 className="text-sm font-medium text-foreground"
               >
-                Password
+                Passwort
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -114,7 +115,7 @@ export default function Login({ onSwitchToRegister }: LoginProps) {
                   autoComplete="current-password"
                   required
                   className="w-full pl-10 pr-12 py-3 bg-input border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-primary transition-all placeholder:text-muted-foreground"
-                  placeholder="Enter your password"
+                  placeholder="Geben Sie Ihr Passwort ein"
                   value={formData.password}
                   onChange={handleChange}
                 />
@@ -141,23 +142,23 @@ export default function Login({ onSwitchToRegister }: LoginProps) {
               {isLoading ? (
                 <div className="flex items-center justify-center gap-2">
                   <div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
-                  <span>Signing in...</span>
+                  <span>Anmeldung läuft...</span>
                 </div>
               ) : (
-                "Sign In"
+                "Anmelden"
               )}
             </button>
 
             {/* Switch to Register */}
             <div className="text-center pt-4">
               <p className="text-sm text-muted-foreground">
-                Don't have an account?{" "}
+                Haben Sie noch kein Konto?{" "}
                 <button
                   type="button"
                   onClick={onSwitchToRegister}
                   className="font-medium text-primary hover:text-primary/80 transition-colors underline-offset-4 hover:underline"
                 >
-                  Sign up here
+                  Hier registrieren
                 </button>
               </p>
             </div>
@@ -166,7 +167,7 @@ export default function Login({ onSwitchToRegister }: LoginProps) {
 
         {/* Footer */}
         <p className="mt-8 text-center text-sm text-muted-foreground">
-          Secure legal document processing powered by AI
+          Sichere Rechtsdokument-Verarbeitung powered by AI
         </p>
       </div>
     </div>

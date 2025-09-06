@@ -40,11 +40,12 @@ export default function ClientTypeSelection({
             </svg>
           </div>
           <h2 className="text-lg font-semibold text-foreground">
-            Select Client Type
+            Kundentyp auswählen
           </h2>
         </div>
         <p className="text-xs text-muted-foreground">
-          Choose the type of client you're sending the payment notice to.
+          Wählen Sie den Typ des Kunden aus, an den Sie die Zahlungsaufforderung
+          senden.
         </p>
       </div>
 
@@ -71,10 +72,10 @@ export default function ClientTypeSelection({
             </div>
             <div>
               <p className="text-sm font-medium text-foreground">
-                Business/Company
+                Unternehmen/Firma
               </p>
               <p className="text-xs text-muted-foreground">
-                For invoices between businesses
+                Für Rechnungen zwischen Unternehmen
               </p>
             </div>
           </div>
@@ -102,10 +103,10 @@ export default function ClientTypeSelection({
             </div>
             <div>
               <p className="text-sm font-medium text-foreground">
-                Private Individual
+                Privatperson
               </p>
               <p className="text-xs text-muted-foreground">
-                For invoices to private customers
+                Für Rechnungen an Privatkunden
               </p>
             </div>
           </div>
@@ -118,14 +119,14 @@ export default function ClientTypeSelection({
           onClick={onBack}
           className="px-4 py-2 text-sm border border-border text-muted-foreground rounded-md hover:bg-accent transition-colors"
         >
-          Back
+          Zurück
         </button>
         <button
           type="button"
           onClick={handleSubmit}
           className="flex-1 py-2 px-4 text-sm rounded-md font-medium bg-emerald-600 hover:bg-emerald-700 text-white transition-colors"
         >
-          Continue to Upload
+          Weiter zum Hochladen
         </button>
       </div>
     </div>

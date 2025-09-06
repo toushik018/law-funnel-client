@@ -578,10 +578,10 @@ export default function App() {
                       </svg>
                       <div>
                         <p className="text-sm font-medium text-blue-800">
-                          Case Created: {currentCase.caseNumber}
+                          Fall erstellt: {currentCase.caseNumber}
                         </p>
                         <p className="text-xs text-blue-600">
-                          Your progress is being saved automatically
+                          Ihr Fortschritt wird automatisch gespeichert
                         </p>
                       </div>
                     </div>
@@ -607,11 +607,11 @@ export default function App() {
                       </svg>
                       <div>
                         <p className="text-sm font-medium text-yellow-800">
-                          Case Management Warning
+                          Fallverwaltungswarnung
                         </p>
                         <p className="text-xs text-yellow-600">
-                          {caseError} - You can continue, but progress may not
-                          be saved.
+                          {caseError} - Sie können fortfahren, aber der
+                          Fortschritt wird möglicherweise nicht gespeichert.
                         </p>
                       </div>
                     </div>
@@ -621,10 +621,10 @@ export default function App() {
                 <ModernStepper
                   currentStep={currentStep}
                   steps={[
-                    { key: "legal", label: "Questions", step: 1 },
-                    { key: "signature", label: "Signature", step: 2 },
-                    { key: "client", label: "Client Type", step: 3 },
-                    { key: "upload", label: "Upload Invoice", step: 4 },
+                    { key: "legal", label: "Fragen", step: 1 },
+                    { key: "signature", label: "Unterschrift", step: 2 },
+                    { key: "client", label: "Kundentyp", step: 3 },
+                    { key: "upload", label: "Rechnung hochladen", step: 4 },
                   ]}
                   loading={caseLoading}
                 />
@@ -672,13 +672,13 @@ export default function App() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-slate-500 uppercase tracking-wide">
-                        Processing Invoice
+                        Rechnung wird verarbeitet
                       </p>
                       <p className="text-lg font-semibold text-slate-900 truncate">
                         {pdfFile.name}
                       </p>
                       <p className="text-sm text-slate-600">
-                        Size: {(pdfFile.size / 1024).toFixed(2)} KB
+                        Größe: {(pdfFile.size / 1024).toFixed(2)} KB
                       </p>
                     </div>
                     {(appState === AppState.SUCCESS ||
@@ -687,7 +687,7 @@ export default function App() {
                         onClick={handleReset}
                         className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium rounded-lg transition-colors"
                       >
-                        Process New Invoice
+                        Neue Rechnung verarbeiten
                       </button>
                     )}
                   </div>

@@ -27,7 +27,7 @@ const NoticePreview: React.FC<NoticePreviewProps> = ({
   const formatPlaceholders = (text: string): string => {
     return text.replace(
       /(\[.*?\])/g,
-      '<span class="placeholder-span inline-block bg-amber-100 text-amber-800 font-medium py-0.5 px-2 rounded-md mx-1">$1</span>'
+      '<span class="placeholder-span inline-block bg-amber-50 text-amber-700 font-medium py-1 px-2 rounded border border-amber-200 mx-1 text-xs">$1</span>'
     );
   };
 
@@ -42,9 +42,31 @@ const NoticePreview: React.FC<NoticePreviewProps> = ({
       );
     } catch (error) {
       console.error("PDF generation failed:", error);
-      alert(
-        "Entschuldigung, beim Erstellen der PDF-Datei ist ein Fehler aufgetreten."
-      );
+
+      // Create a more user-friendly error display
+      const errorContainer = document.createElement("div");
+      errorContainer.className =
+        "fixed top-4 right-4 bg-destructive/10 border border-destructive/20 text-destructive px-4 py-3 rounded-lg shadow-lg z-50 max-w-md";
+      errorContainer.innerHTML = `
+        <div class="flex items-start gap-2">
+          <svg class="w-4 h-4 text-destructive mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          <div>
+            <p class="text-sm font-medium text-destructive">PDF-Erstellung fehlgeschlagen</p>
+            <p class="text-xs text-destructive/80 mt-1">Entschuldigung, beim Erstellen der PDF-Datei ist ein Fehler aufgetreten.</p>
+          </div>
+        </div>
+      `;
+
+      document.body.appendChild(errorContainer);
+
+      // Auto-remove after 5 seconds
+      setTimeout(() => {
+        if (errorContainer.parentNode) {
+          errorContainer.parentNode.removeChild(errorContainer);
+        }
+      }, 5000);
     } finally {
       setIsDownloading(false);
     }
@@ -141,14 +163,28 @@ const NoticePreview: React.FC<NoticePreviewProps> = ({
   const city = getCityFromAddress(ownCompanyDetails.address);
 
   return (
-    <div className="mt-8">
-      <h2 className="text-xl font-bold text-zinc-800 mb-4 flex items-center">
-        <DocumentIcon className="w-7 h-7 text-indigo-500 mr-2.5" />
-        Vorschau der generierten Mahnung
-      </h2>
-      <div className="rounded-lg border border-zinc-200/80 shadow-sm overflow-hidden">
+    <div className="space-y-6">
+      {/* Header Section */}
+      <div className="bg-card rounded-lg border border-border p-4">
+        <div className="flex items-center gap-3 mb-2">
+          <div className="p-2 bg-primary/10 rounded-lg">
+            <DocumentIcon className="w-5 h-5 text-primary" />
+          </div>
+          <div>
+            <h2 className="text-lg font-semibold text-card-foreground">
+              Vorschau der generierten Mahnung
+            </h2>
+            <p className="text-xs text-muted-foreground">
+              Überprüfen Sie die Mahnung vor dem Download
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Document Preview Card */}
+      <div className="bg-card rounded-lg border border-border overflow-hidden shadow-sm">
         {/* The ref is now on an inner div to avoid capturing the parent's padding in the PDF */}
-        <div className="bg-white p-8 sm:p-12">
+        <div className="bg-background p-6 sm:p-8">
           <div
             ref={noticeRef}
             style={{
@@ -156,6 +192,7 @@ const NoticePreview: React.FC<NoticePreviewProps> = ({
               color: "#334155",
               fontSize: "10pt",
               lineHeight: 1.6,
+              maxWidth: "100%",
             }}
           >
             <div
@@ -208,7 +245,9 @@ const NoticePreview: React.FC<NoticePreviewProps> = ({
                       {city ? (
                         city
                       ) : (
-                        <span className="placeholder-span">[Ihre Stadt]</span>
+                        <span className="inline-block bg-amber-50 text-amber-700 font-medium py-1 px-2 rounded border border-amber-200 text-xs">
+                          [Ihre Stadt]
+                        </span>
                       )}
                     </p>
                     <p style={{ margin: 0 }}>
@@ -357,7 +396,9 @@ const NoticePreview: React.FC<NoticePreviewProps> = ({
                   {ownCompanyDetails.bankName ? (
                     ownCompanyDetails.bankName
                   ) : (
-                    <span className="placeholder-span">[Name der Bank]</span>
+                    <span className="inline-block bg-amber-50 text-amber-700 font-medium py-1 px-2 rounded border border-amber-200 text-xs">
+                      [Name der Bank]
+                    </span>
                   )}
                 </p>
                 <p style={{ margin: "0 0 0.25rem 0" }}>
@@ -365,7 +406,9 @@ const NoticePreview: React.FC<NoticePreviewProps> = ({
                   {ownCompanyDetails.iban ? (
                     ownCompanyDetails.iban
                   ) : (
-                    <span className="placeholder-span">[IBAN]</span>
+                    <span className="inline-block bg-amber-50 text-amber-700 font-medium py-1 px-2 rounded border border-amber-200 text-xs">
+                      [IBAN]
+                    </span>
                   )}
                 </p>
                 <p style={{ margin: "0 0 0.25rem 0" }}>
@@ -373,7 +416,9 @@ const NoticePreview: React.FC<NoticePreviewProps> = ({
                   {ownCompanyDetails.bic ? (
                     ownCompanyDetails.bic
                   ) : (
-                    <span className="placeholder-span">[BIC]</span>
+                    <span className="inline-block bg-amber-50 text-amber-700 font-medium py-1 px-2 rounded border border-amber-200 text-xs">
+                      [BIC]
+                    </span>
                   )}
                 </p>
                 <p style={{ margin: 0 }}>
@@ -390,12 +435,16 @@ const NoticePreview: React.FC<NoticePreviewProps> = ({
             >
               <p style={{ margin: 0 }}>
                 {ownCompanyDetails.signerName || (
-                  <span className="placeholder-span">[Ihr Name]</span>
+                  <span className="inline-block bg-amber-50 text-amber-700 font-medium py-1 px-2 rounded border border-amber-200 text-xs">
+                    [Ihr Name]
+                  </span>
                 )}
               </p>
               <p style={{ margin: 0, fontSize: "9pt" }}>
                 {ownCompanyDetails.name || (
-                  <span className="placeholder-span">[Ihr Firmenname]</span>
+                  <span className="inline-block bg-amber-50 text-amber-700 font-medium py-1 px-2 rounded border border-amber-200 text-xs">
+                    [Ihr Firmenname]
+                  </span>
                 )}
               </p>
             </div>
@@ -403,60 +452,51 @@ const NoticePreview: React.FC<NoticePreviewProps> = ({
         </div>
       </div>
 
-      <div className="mt-6 flex flex-col items-start gap-4">
-        <div className="w-full bg-rose-50 p-3 rounded-lg border border-rose-200">
-          <label className="flex items-start cursor-pointer">
+      {/* Fee Confirmation & Download Section */}
+      <div className="bg-card rounded-lg border border-border p-4 space-y-4">
+        {/* Fee Confirmation */}
+        <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
+          <label className="flex items-start gap-3 cursor-pointer">
             <input
               type="checkbox"
-              className="h-4 w-4 text-indigo-600 border-zinc-300 rounded focus:ring-indigo-500 mt-1 flex-shrink-0"
+              className="w-4 h-4 text-primary border-border rounded focus:ring-ring focus:ring-2 mt-1 flex-shrink-0"
               checked={feesConfirmed}
               onChange={(e) => setFeesConfirmed(e.target.checked)}
             />
-            <span className="ml-3 text-sm text-rose-800">
-              Ich bestätige, dass ich berechtigt bin, die in dieser Mahnung
-              angegebenen Mahngebühren zu verlangen, und dass ich für die
-              rechtliche Zulässigkeit der Höhe und Art der Mahngebühr selbst
-              verantwortlich bin.
-            </span>
+            <div>
+              <p className="text-sm font-medium text-amber-800 mb-1">
+                Rechtliche Bestätigung erforderlich
+              </p>
+              <p className="text-xs text-amber-700 leading-relaxed">
+                Ich bestätige, dass ich berechtigt bin, die in dieser Mahnung
+                angegebenen Mahngebühren zu verlangen, und dass ich für die
+                rechtliche Zulässigkeit der Höhe und Art der Mahngebühr selbst
+                verantwortlich bin.
+              </p>
+            </div>
           </label>
         </div>
 
-        <button
-          onClick={handleDownloadPdf}
-          disabled={isDownloading || !feesConfirmed}
-          className="self-end w-full sm:w-auto flex items-center justify-center bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-5 rounded-lg transition-all duration-300 shadow-sm disabled:bg-indigo-400 disabled:cursor-not-allowed whitespace-nowrap"
-        >
-          {isDownloading ? (
-            <>
-              <svg
-                className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                ></circle>
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                ></path>
-              </svg>
-              Wird heruntergeladen...
-            </>
-          ) : (
-            <>
-              <DownloadIcon className="w-5 h-5 mr-2" />
-              PDF herunterladen
-            </>
-          )}
-        </button>
+        {/* Download Button */}
+        <div className="flex justify-end">
+          <button
+            onClick={handleDownloadPdf}
+            disabled={isDownloading || !feesConfirmed}
+            className="flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primary/90 text-primary-foreground font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md"
+          >
+            {isDownloading ? (
+              <>
+                <div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
+                <span>Wird heruntergeladen...</span>
+              </>
+            ) : (
+              <>
+                <DownloadIcon className="w-4 h-4" />
+                <span>PDF herunterladen</span>
+              </>
+            )}
+          </button>
+        </div>
       </div>
     </div>
   );

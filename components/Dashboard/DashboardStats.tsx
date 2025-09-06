@@ -58,7 +58,7 @@ export default function DashboardStats() {
             </svg>
             <div>
               <p className="text-sm font-medium text-red-800">
-                Unable to load statistics
+                Statistiken können nicht geladen werden
               </p>
               <p className="text-xs text-red-600">{error}</p>
             </div>
@@ -72,9 +72,9 @@ export default function DashboardStats() {
       <div className="bg-white rounded-2xl p-6 border border-gray-100">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm font-medium text-gray-600">Total Cases</p>
+            <p className="text-sm font-medium text-gray-600">Fälle gesamt</p>
             <p className="text-2xl font-bold text-gray-900">{totalCases}</p>
-            <p className="text-xs text-gray-500 mt-1">All time processing</p>
+            <p className="text-xs text-gray-500 mt-1">Gesamte Bearbeitung</p>
           </div>
           <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
             <svg
@@ -97,9 +97,11 @@ export default function DashboardStats() {
       <div className="bg-white rounded-2xl p-6 border border-gray-100">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm font-medium text-gray-600">Recent Activity</p>
+            <p className="text-sm font-medium text-gray-600">
+              Letzte Aktivität
+            </p>
             <p className="text-2xl font-bold text-gray-900">{recentActivity}</p>
-            <p className="text-xs text-gray-500 mt-1">Last 30 days</p>
+            <p className="text-xs text-gray-500 mt-1">Letzte 30 Tage</p>
           </div>
           <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
             <svg
@@ -122,10 +124,10 @@ export default function DashboardStats() {
       <div className="bg-white rounded-2xl p-6 border border-gray-100">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm font-medium text-gray-600">Completion Rate</p>
+            <p className="text-sm font-medium text-gray-600">Abschlussrate</p>
             <p className="text-2xl font-bold text-gray-900">{successRate}%</p>
             <p className="text-xs text-gray-500 mt-1">
-              {completedCases} of {totalCases} completed
+              {completedCases} von {totalCases} abgeschlossen
             </p>
           </div>
           <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
@@ -149,14 +151,14 @@ export default function DashboardStats() {
       <div className="bg-white rounded-2xl p-6 border border-gray-100">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm font-medium text-gray-600">In Progress</p>
+            <p className="text-sm font-medium text-gray-600">In Bearbeitung</p>
             <p className="text-2xl font-bold text-gray-900">
               {(statistics?.byStatus[CaseStatus.DRAFT] || 0) +
                 (statistics?.byStatus[CaseStatus.QUALIFICATION_COMPLETE] || 0) +
                 (statistics?.byStatus[CaseStatus.SIGNATURE_COMPLETE] || 0) +
                 (statistics?.byStatus[CaseStatus.CLIENT_TYPE_SELECTED] || 0)}
             </p>
-            <p className="text-xs text-gray-500 mt-1">Active workflows</p>
+            <p className="text-xs text-gray-500 mt-1">Aktive Workflows</p>
           </div>
           <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center">
             <svg

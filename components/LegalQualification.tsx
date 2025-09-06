@@ -74,11 +74,13 @@ export default function LegalQualification({
     const newErrors: Record<string, string> = {};
 
     if (!formData.contractSituation.trim()) {
-      newErrors.contractSituation = "Please describe the contract situation";
+      newErrors.contractSituation =
+        "Bitte beschreiben Sie die Vertragssituation";
     }
 
     if (!formData.invoiceSentDate) {
-      newErrors.invoiceSentDate = "Please provide when the invoice was sent";
+      newErrors.invoiceSentDate =
+        "Bitte geben Sie an, wann die Rechnung gesendet wurde";
     }
 
     // Validate 30-day minimum requirement for invoice sent date
@@ -89,7 +91,7 @@ export default function LegalQualification({
 
       if (invoiceSentDate > thirtyDaysAgo) {
         newErrors.invoiceSentDate =
-          "Invoice sent date must be at least 30 days ago";
+          "Das Rechnungsdatum muss mindestens 30 Tage zurückliegen";
       }
     }
 
@@ -134,12 +136,12 @@ export default function LegalQualification({
             </svg>
           </div>
           <h2 className="text-lg font-semibold text-foreground">
-            Legal Questions
+            Rechtliche Fragen
           </h2>
         </div>
         <p className="text-sm text-muted-foreground">
-          Answer these questions to qualify for creating a legally-binding
-          payment notice.
+          Beantworten Sie diese Fragen, um sich für die Erstellung einer
+          rechtsgültigen Zahlungsaufforderung zu qualifizieren.
         </p>
       </div>
 
@@ -161,7 +163,7 @@ export default function LegalQualification({
                 />
               </svg>
               <div>
-                <p className="text-sm font-medium text-destructive">Error</p>
+                <p className="text-sm font-medium text-destructive">Fehler</p>
                 <p className="text-xs text-destructive/80 mt-1">{error}</p>
               </div>
             </div>
@@ -185,9 +187,12 @@ export default function LegalQualification({
                 />
               </svg>
               <div>
-                <p className="text-sm font-medium text-emerald-800">Saved</p>
+                <p className="text-sm font-medium text-emerald-800">
+                  Gespeichert
+                </p>
                 <p className="text-xs text-emerald-700 mt-1">
-                  Legal qualification answers have been saved to your case.
+                  Antworten zur rechtlichen Qualifikation wurden in Ihrem Fall
+                  gespeichert.
                 </p>
               </div>
             </div>
@@ -195,38 +200,45 @@ export default function LegalQualification({
         )}
 
         <div className="space-y-6">
-          {/* Contract Situation - Full Width */}
+          {/* Contract Situation */}
           <div>
             <label
               htmlFor="contractSituation"
-              className="block text-sm font-medium text-foreground mb-2"
+              className="block text-sm font-medium text-foreground mb-3"
             >
-              What is the situation with the contract?{" "}
-              <span className="text-destructive">*</span>
+              Vertragsdetails <span className="text-destructive">*</span>
             </label>
             <div className="relative">
               <textarea
                 id="contractSituation"
-                rows={4}
-                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all resize-none text-sm ${
+                rows={5}
+                className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all resize-none text-sm leading-relaxed ${
                   errors.contractSituation
                     ? "border-destructive bg-destructive/5"
                     : "border-border hover:border-emerald-300"
                 }`}
-                placeholder="Describe the contract terms, agreements, and current status in detail..."
+                placeholder="Bitte beschreiben Sie:\n• Vertragsbestimmungen und Vereinbarungen\n• Zahlungsvereinbarungen\n• Aktuelle Situation oder Streitfall\n• Weitere relevante Details"
                 value={formData.contractSituation}
                 onChange={(e) =>
                   handleInputChange("contractSituation", e.target.value)
                 }
               />
-              <div className="absolute bottom-2 right-2 text-xs text-muted-foreground">
+              <div
+                className={`absolute bottom-3 right-3 text-xs px-2 py-1 rounded ${
+                  formData.contractSituation.length > 450
+                    ? "bg-amber-100 text-amber-700"
+                    : formData.contractSituation.length > 0
+                    ? "bg-emerald-100 text-emerald-700"
+                    : "bg-gray-100 text-gray-500"
+                }`}
+              >
                 {formData.contractSituation.length}/500
               </div>
             </div>
             {errors.contractSituation && (
-              <p className="mt-1 text-xs text-destructive flex items-center gap-1">
+              <p className="mt-2 text-sm text-destructive flex items-center gap-2">
                 <svg
-                  className="w-3 h-3"
+                  className="w-4 h-4"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                 >
@@ -236,16 +248,16 @@ export default function LegalQualification({
                     clipRule="evenodd"
                   />
                 </svg>
-                <span>{errors.contractSituation}</span>
+                {errors.contractSituation}
               </p>
             )}
           </div>
 
-          {/* Date Fields */}
-          <div>
-            <h3 className="text-sm font-medium text-foreground mb-4 flex items-center gap-2">
+          {/* Invoice Date */}
+          <div className="bg-slate-50 rounded-lg p-4 border">
+            <div className="flex items-center gap-2 mb-3">
               <svg
-                className="w-4 h-4 text-emerald-600"
+                className="w-5 h-5 text-emerald-600"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -257,59 +269,64 @@ export default function LegalQualification({
                   d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
                 />
               </svg>
-              Important Date
-            </h3>
-            <div className="max-w-md">
-              <div>
-                <label
-                  htmlFor="invoiceSentDate"
-                  className="block text-sm font-medium text-foreground mb-2"
-                >
-                  Invoice Sent Date <span className="text-destructive">*</span>
-                </label>
-                <DatePicker
-                  id="invoiceSentDate"
-                  date={
-                    formData.invoiceSentDate
-                      ? new Date(formData.invoiceSentDate)
-                      : undefined
-                  }
-                  onDateChange={(date) =>
-                    handleDateChange("invoiceSentDate", date)
-                  }
-                  placeholder="Select date"
-                  maxDate={(() => {
-                    const thirtyDaysAgo = new Date();
-                    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-                    return thirtyDaysAgo;
-                  })()}
-                  className={
-                    errors.invoiceSentDate
-                      ? "border-destructive bg-destructive/5"
-                      : ""
-                  }
-                />
-                <p className="text-xs text-muted-foreground mt-1">
-                  When was the invoice sent to the client? (Must be at least 30
-                  days ago)
-                </p>
-                {errors.invoiceSentDate && (
-                  <p className="mt-1 text-xs text-destructive flex items-center gap-1">
-                    <svg
-                      className="w-3 h-3"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                    <span>{errors.invoiceSentDate}</span>
-                  </p>
-                )}
+              <h3 className="text-sm font-medium text-foreground">
+                Rechnungsdatum
+              </h3>
+            </div>
+
+            <div className="max-w-sm">
+              <label
+                htmlFor="invoiceSentDate"
+                className="block text-sm font-medium text-foreground mb-2"
+              >
+                Wann wurde die Rechnung gesendet?{" "}
+                <span className="text-destructive">*</span>
+              </label>
+
+              <DatePicker
+                id="invoiceSentDate"
+                date={
+                  formData.invoiceSentDate
+                    ? new Date(formData.invoiceSentDate)
+                    : undefined
+                }
+                onDateChange={(date) =>
+                  handleDateChange("invoiceSentDate", date)
+                }
+                placeholder="📅 Rechnungsdatum auswählen"
+                maxDate={(() => {
+                  const thirtyDaysAgo = new Date();
+                  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+                  return thirtyDaysAgo;
+                })()}
+                className={
+                  errors.invoiceSentDate
+                    ? "border-destructive bg-destructive/5"
+                    : ""
+                }
+              />
+
+              <div className="mt-2 text-xs text-slate-600 bg-amber-50 border border-amber-200 rounded p-2">
+                ⚠️ Die Rechnung muss für rechtliche Schritte mindestens 30 Tage
+                alt sein
               </div>
+
+              {errors.invoiceSentDate && (
+                <p className="mt-2 text-sm text-destructive flex items-center gap-2">
+                  <svg
+                    className="w-4 h-4"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  {errors.invoiceSentDate}
+                </p>
+              )}
             </div>
           </div>
         </div>
@@ -331,12 +348,13 @@ export default function LegalQualification({
             </svg>
             <div>
               <p className="text-sm font-medium text-amber-800">
-                Legal Information
+                Rechtliche Informationen
               </p>
               <p className="text-xs text-amber-700 mt-1">
-                By providing this information, you confirm these details are
-                accurate and will be used to assess the legal validity of
-                creating a payment notice.
+                Durch die Bereitstellung dieser Informationen bestätigen Sie,
+                dass diese Angaben korrekt sind und zur Bewertung der
+                rechtlichen Gültigkeit der Erstellung einer Zahlungsaufforderung
+                verwendet werden.
               </p>
             </div>
           </div>
@@ -349,7 +367,7 @@ export default function LegalQualification({
               onClick={onBack}
               className="px-6 py-2 border border-border text-foreground rounded-md hover:bg-muted transition-colors text-sm font-medium"
             >
-              Back
+              Zurück
             </button>
           )}
           <button
@@ -383,7 +401,7 @@ export default function LegalQualification({
               </svg>
             )}
             <span>
-              {loading ? "Saving..." : "Continue to Digital Signature"}
+              {loading ? "Speichere..." : "Weiter zur digitalen Unterschrift"}
             </span>
             {!loading && (
               <svg

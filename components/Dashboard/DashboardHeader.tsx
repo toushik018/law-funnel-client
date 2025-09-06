@@ -29,7 +29,7 @@ export default function DashboardHeader({
             <div>
               <h1 className="text-xl font-bold text-gray-900">Law Funnel</h1>
               <p className="text-xs text-gray-500">
-                Document Processing Dashboard
+                Dokumentenverarbeitungs-Dashboard
               </p>
             </div>
           </div>
@@ -54,7 +54,7 @@ export default function DashboardHeader({
                   d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                 />
               </svg>
-              <span>My Cases</span>
+              <span>Meine Fälle</span>
             </button>
 
             <div className="text-right hidden sm:block">
@@ -65,7 +65,7 @@ export default function DashboardHeader({
               <button
                 onClick={onNavigateProfile}
                 className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
-                title="Profile"
+                title="Profil"
               >
                 <svg
                   className="w-5 h-5"
@@ -84,7 +84,7 @@ export default function DashboardHeader({
               <button
                 onClick={onLogout}
                 className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
-                title="Logout"
+                title="Abmelden"
               >
                 <svg
                   className="w-5 h-5"

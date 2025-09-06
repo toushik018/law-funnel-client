@@ -25,7 +25,7 @@ export default function Register({ onSwitchToLogin }: RegisterProps) {
     setError(null);
 
     if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match");
+      setError("Passwörter stimmen nicht überein");
       return;
     }
 
@@ -76,10 +76,10 @@ export default function Register({ onSwitchToLogin }: RegisterProps) {
           </div>
 
           <h1 className="text-3xl font-bold text-foreground mb-2">
-            Create Account
+            Konto erstellen
           </h1>
           <p className="text-muted-foreground">
-            Join Law Funnel to process legal documents
+            Treten Sie Law Funnel bei, um Rechtsdokumente zu verarbeiten
           </p>
         </div>
 
@@ -103,7 +103,7 @@ export default function Register({ onSwitchToLogin }: RegisterProps) {
                 htmlFor="name"
                 className="text-sm font-medium text-foreground"
               >
-                Full Name
+                Vollständiger Name
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -116,7 +116,7 @@ export default function Register({ onSwitchToLogin }: RegisterProps) {
                   autoComplete="name"
                   required
                   className="w-full pl-10 pr-4 py-3 bg-input border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-primary transition-all placeholder:text-muted-foreground"
-                  placeholder="Enter your full name"
+                  placeholder="Geben Sie Ihren vollständigen Namen ein"
                   value={formData.name}
                   onChange={handleChange}
                 />
@@ -129,7 +129,7 @@ export default function Register({ onSwitchToLogin }: RegisterProps) {
                 htmlFor="email"
                 className="text-sm font-medium text-foreground"
               >
-                Email Address
+                Email-Adresse
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -142,7 +142,7 @@ export default function Register({ onSwitchToLogin }: RegisterProps) {
                   autoComplete="email"
                   required
                   className="w-full pl-10 pr-4 py-3 bg-input border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-primary transition-all placeholder:text-muted-foreground"
-                  placeholder="Enter your email"
+                  placeholder="Geben Sie Ihre E-Mail ein"
                   value={formData.email}
                   onChange={handleChange}
                 />
@@ -155,7 +155,7 @@ export default function Register({ onSwitchToLogin }: RegisterProps) {
                 htmlFor="password"
                 className="text-sm font-medium text-foreground"
               >
-                Password
+                Passwort
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -168,7 +168,7 @@ export default function Register({ onSwitchToLogin }: RegisterProps) {
                   autoComplete="new-password"
                   required
                   className="w-full pl-10 pr-4 py-3 bg-input border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-primary transition-all placeholder:text-muted-foreground"
-                  placeholder="Create a password"
+                  placeholder="Erstellen Sie ein Passwort"
                   value={formData.password}
                   onChange={handleChange}
                 />
@@ -181,7 +181,7 @@ export default function Register({ onSwitchToLogin }: RegisterProps) {
                 htmlFor="confirmPassword"
                 className="text-sm font-medium text-foreground"
               >
-                Confirm Password
+                Passwort bestätigen
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -194,7 +194,7 @@ export default function Register({ onSwitchToLogin }: RegisterProps) {
                   autoComplete="new-password"
                   required
                   className="w-full pl-10 pr-4 py-3 bg-input border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-primary transition-all placeholder:text-muted-foreground"
-                  placeholder="Confirm your password"
+                  placeholder="Bestätigen Sie Ihr Passwort"
                   value={formData.confirmPassword}
                   onChange={handleChange}
                 />
@@ -219,19 +219,20 @@ export default function Register({ onSwitchToLogin }: RegisterProps) {
                   htmlFor="terms"
                   className="font-medium text-foreground cursor-pointer"
                 >
-                  I agree to the{" "}
+                  Ich stimme den{" "}
                   <button
                     type="button"
                     onClick={() => setShowTerms(true)}
                     className="text-primary hover:text-primary/80 underline-offset-4 hover:underline"
                   >
-                    Terms and Conditions
-                  </button>
+                    Allgemeinen Geschäftsbedingungen
+                  </button>{" "}
+                  zu
                   <span className="text-destructive ml-1">*</span>
                 </label>
                 <p className="text-muted-foreground text-xs mt-1">
-                  You must read and accept our terms and conditions before
-                  creating an account.
+                  Sie müssen unsere Allgemeinen Geschäftsbedingungen lesen und
+                  akzeptieren, bevor Sie ein Konto erstellen.
                 </p>
               </div>
             </div>
@@ -245,23 +246,23 @@ export default function Register({ onSwitchToLogin }: RegisterProps) {
               {isLoading ? (
                 <div className="flex items-center justify-center gap-2">
                   <div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
-                  <span>Creating account...</span>
+                  <span>Konto wird erstellt...</span>
                 </div>
               ) : (
-                "Create Account"
+                "Konto erstellen"
               )}
             </button>
 
             {/* Switch to Login */}
             <div className="text-center pt-4">
               <p className="text-sm text-muted-foreground">
-                Already have an account?{" "}
+                Haben Sie bereits ein Konto?{" "}
                 <button
                   type="button"
                   onClick={onSwitchToLogin}
                   className="font-medium text-primary hover:text-primary/80 transition-colors underline-offset-4 hover:underline"
                 >
-                  Sign in
+                  Anmelden
                 </button>
               </p>
             </div>

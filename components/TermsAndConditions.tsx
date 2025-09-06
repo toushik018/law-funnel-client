@@ -31,7 +31,7 @@ export default function TermsAndConditions({
               <FileText className="w-5 h-5 text-primary" />
             </div>
             <h2 className="text-xl font-semibold text-foreground">
-              Terms and Conditions
+              Allgemeine Geschäftsbedingungen
             </h2>
           </div>
           <button
@@ -51,14 +51,15 @@ export default function TermsAndConditions({
               <div className="flex items-center gap-2 mb-3">
                 <Shield className="w-5 h-5 text-primary" />
                 <h3 className="text-lg font-semibold text-foreground mb-0">
-                  1. Acceptance of Terms
+                  1. Annahme der Bedingungen
                 </h3>
               </div>
               <p className="text-muted-foreground mb-4 leading-relaxed">
-                By accessing and using Law Funnel ("the Service"), you accept
-                and agree to be bound by the terms and provision of this
-                agreement. If you do not agree to abide by the above, please do
-                not use this service.
+                Durch den Zugriff auf und die Nutzung von Law Funnel („der
+                Dienst“) akzeptieren Sie diese Vereinbarung und stimmen zu, an
+                deren Bestimmungen gebunden zu sein. Wenn Sie nicht mit den oben
+                genannten Bedingungen einverstanden sind, nutzen Sie diesen
+                Dienst bitte nicht.
               </p>
             </div>
 
@@ -67,15 +68,16 @@ export default function TermsAndConditions({
               <div className="flex items-center gap-2 mb-3">
                 <FileText className="w-5 h-5 text-primary" />
                 <h3 className="text-lg font-semibold text-foreground mb-0">
-                  2. Service Description
+                  2. Dienstbeschreibung
                 </h3>
               </div>
               <p className="text-muted-foreground mb-4 leading-relaxed">
-                Law Funnel is a legal document processing platform that uses
-                artificial intelligence to analyze and extract information from
-                legal documents. The service is designed to assist legal
-                professionals and individuals in processing legal documents more
-                efficiently.
+                Law Funnel ist eine Plattform zur Verarbeitung von
+                Rechtsdokumenten, die künstliche Intelligenz zur Analyse und
+                Extraktion von Informationen aus Rechtsdokumenten verwendet. Der
+                Dienst ist darauf ausgelegt, Rechtsexperten und Privatpersonen
+                bei der effizienteren Verarbeitung von Rechtsdokumenten zu
+                unterstützen.
               </p>
             </div>
 
@@ -84,29 +86,29 @@ export default function TermsAndConditions({
               <div className="flex items-center gap-2 mb-3">
                 <User className="w-5 h-5 text-primary" />
                 <h3 className="text-lg font-semibold text-foreground mb-0">
-                  3. User Responsibilities
+                  3. Nutzerverantwortlichkeiten
                 </h3>
               </div>
               <ul className="list-disc pl-6 mb-4 text-muted-foreground space-y-2">
                 <li>
-                  You are responsible for maintaining the confidentiality of
-                  your account credentials
+                  Sie sind für die Vertraulichkeit Ihrer Anmeldedaten
+                  verantwortlich
                 </li>
                 <li>
-                  You agree to provide accurate and complete information when
-                  creating your account
+                  Sie verpflichten sich, genaue und vollständige Informationen
+                  bei der Kontoerstellung anzugeben
                 </li>
                 <li>
-                  You are responsible for all activities that occur under your
-                  account
+                  Sie sind für alle Aktivitäten verantwortlich, die unter Ihrem
+                  Konto auftreten
                 </li>
                 <li>
-                  You agree not to use the service for any unlawful or
-                  prohibited activities
+                  Sie verpflichten sich, den Dienst nicht für rechtswidrige oder
+                  verbotene Aktivitäten zu nutzen
                 </li>
                 <li>
-                  You understand that the AI analysis is for assistance purposes
-                  and should not replace professional legal advice
+                  Sie verstehen, dass die KI-Analyse zur Unterstützung dient und
+                  professionelle Rechtsberatung nicht ersetzen sollte
                 </li>
               </ul>
             </div>
@@ -116,16 +118,16 @@ export default function TermsAndConditions({
               <div className="flex items-center gap-2 mb-3">
                 <Shield className="w-5 h-5 text-primary" />
                 <h3 className="text-lg font-semibold text-foreground mb-0">
-                  4. Privacy and Data Protection
+                  4. Datenschutz und Datensicherheit
                 </h3>
               </div>
               <p className="text-muted-foreground mb-4 leading-relaxed">
-                We are committed to protecting your privacy and the
-                confidentiality of your legal documents. Your documents are
-                processed securely, and we implement appropriate technical and
-                organizational measures to protect your personal data. We do not
-                share your documents or extracted data with third parties
-                without your explicit consent.
+                Wir verpflichten uns, Ihre Privatsphäre und die Vertraulichkeit
+                Ihrer Rechtsdokumente zu schützen. Ihre Dokumente werden sicher
+                verarbeitet, und wir implementieren angemessene technische und
+                organisatorische Maßnahmen zum Schutz Ihrer personenbezogenen
+                Daten. Wir teilen Ihre Dokumente oder extrahierte Daten nicht
+                ohne Ihre ausdrückliche Zustimmung mit Dritten.
               </p>
             </div>
 
@@ -134,14 +136,14 @@ export default function TermsAndConditions({
               <div className="flex items-center gap-2 mb-3">
                 <Scale className="w-5 h-5 text-primary" />
                 <h3 className="text-lg font-semibold text-foreground mb-0">
-                  5. Intellectual Property
+                  5. Geistiges Eigentum
                 </h3>
               </div>
               <p className="text-muted-foreground mb-4 leading-relaxed">
-                The Service and its original content, features, and
-                functionality are and will remain the exclusive property of Law
-                Funnel and its licensors. The service is protected by copyright,
-                trademark, and other laws.
+                Der Dienst und seine ursprünglichen Inhalte, Funktionen und
+                Funktionalitäten sind und bleiben das ausschließliche Eigentum
+                von Law Funnel und seinen Lizenzgebern. Der Dienst ist durch
+                Urheberrecht, Markenrecht und andere Gesetze geschützt.
               </p>
             </div>
 
@@ -150,15 +152,16 @@ export default function TermsAndConditions({
               <div className="flex items-center gap-2 mb-3">
                 <AlertTriangle className="w-5 h-5 text-amber-500" />
                 <h3 className="text-lg font-semibold text-foreground mb-0">
-                  6. Disclaimer of Warranties
+                  6. Gewährleistungsausschluss
                 </h3>
               </div>
               <p className="text-muted-foreground mb-4 leading-relaxed">
-                The information provided by Law Funnel is for general
-                informational purposes only. While we strive for accuracy, we
-                make no warranties or representations about the accuracy,
-                reliability, completeness, or timeliness of the content. The AI
-                analysis should not be considered as professional legal advice.
+                Die von Law Funnel bereitgestellten Informationen dienen nur
+                allgemeinen Informationszwecken. Während wir um Genauigkeit
+                bemüht sind, geben wir keine Gewährleistungen oder Zusicherungen
+                bezüglich der Genauigkeit, Zuverlässigkeit, Vollständigkeit oder
+                Aktualität der Inhalte ab. Die KI-Analyse sollte nicht als
+                professionelle Rechtsberatung betrachtet werden.
               </p>
             </div>
 
@@ -167,15 +170,15 @@ export default function TermsAndConditions({
               <div className="flex items-center gap-2 mb-3">
                 <AlertTriangle className="w-5 h-5 text-amber-500" />
                 <h3 className="text-lg font-semibold text-foreground mb-0">
-                  7. Limitation of Liability
+                  7. Haftungsbegrenzung
                 </h3>
               </div>
               <p className="text-muted-foreground mb-4 leading-relaxed">
-                In no event shall Law Funnel, its directors, employees, or
-                agents be liable for any indirect, incidental, special,
-                consequential, or punitive damages, including without
-                limitation, loss of profits, data, use, goodwill, or other
-                intangible losses resulting from your use of the service.
+                In keinem Fall haften Law Funnel, seine Direktoren, Mitarbeiter
+                oder Vertreter für indirekte, beiläufige, besondere, Folge- oder
+                Strafschäden, einschließlich, aber nicht beschränkt auf Verlust
+                von Gewinnen, Daten, Nutzung, Goodwill oder andere immaterielle
+                Verluste, die aus Ihrer Nutzung des Dienstes resultieren.
               </p>
             </div>
 
@@ -184,21 +187,25 @@ export default function TermsAndConditions({
               <div className="flex items-center gap-2 mb-3">
                 <CreditCard className="w-5 h-5 text-primary" />
                 <h3 className="text-lg font-semibold text-foreground mb-0">
-                  8. Subscription and Payment
+                  8. Abonnement und Zahlung
                 </h3>
               </div>
               <ul className="list-disc pl-6 mb-4 text-muted-foreground space-y-2">
                 <li>
-                  Some features of the service may require a paid subscription
+                  Einige Funktionen des Dienstes erfordern möglicherweise ein
+                  kostenpflichtiges Abonnement
                 </li>
                 <li>
-                  Subscription fees are billed in advance on a monthly or annual
-                  basis
+                  Abonnementgebühren werden im Voraus monatlich oder jährlich
+                  abgerechnet
                 </li>
-                <li>All fees are non-refundable unless otherwise specified</li>
                 <li>
-                  We reserve the right to modify subscription pricing with 30
-                  days notice
+                  Alle Gebühren sind nicht erstattungsfähig, sofern nicht anders
+                  angegeben
+                </li>
+                <li>
+                  Wir behalten uns das Recht vor, Abonnementpreise mit
+                  30-tägiger Vorankündigung zu ändern
                 </li>
               </ul>
             </div>
@@ -208,14 +215,15 @@ export default function TermsAndConditions({
               <div className="flex items-center gap-2 mb-3">
                 <X className="w-5 h-5 text-destructive" />
                 <h3 className="text-lg font-semibold text-foreground mb-0">
-                  9. Termination
+                  9. Kündigung
                 </h3>
               </div>
               <p className="text-muted-foreground mb-4 leading-relaxed">
-                We may terminate or suspend your account and bar access to the
-                service immediately, without prior notice or liability, under
-                our sole discretion, for any reason whatsoever, including
-                without limitation if you breach the Terms.
+                Wir können Ihr Konto kündigen oder sperren und den Zugang zum
+                Dienst sofort ohne vorherige Ankündigung oder Haftung nach
+                unserem alleinigen Ermessen aus beliebigen Gründen verweigern,
+                einschließlich, aber nicht beschränkt darauf, wenn Sie gegen die
+                Bedingungen verstoßen.
               </p>
             </div>
 
@@ -224,14 +232,15 @@ export default function TermsAndConditions({
               <div className="flex items-center gap-2 mb-3">
                 <FileText className="w-5 h-5 text-primary" />
                 <h3 className="text-lg font-semibold text-foreground mb-0">
-                  10. Changes to Terms
+                  10. Änderungen der Bedingungen
                 </h3>
               </div>
               <p className="text-muted-foreground mb-4 leading-relaxed">
-                We reserve the right, at our sole discretion, to modify or
-                replace these Terms at any time. If a revision is material, we
-                will provide at least 30 days notice prior to any new terms
-                taking effect.
+                Wir behalten uns das Recht vor, nach unserem alleinigen Ermessen
+                diese Bedingungen jederzeit zu ändern oder zu ersetzen. Bei
+                wesentlichen Änderungen werden wir mindestens 30 Tage vor
+                Inkrafttreten der neuen Bedingungen eine Benachrichtigung
+                versenden.
               </p>
             </div>
 
@@ -240,13 +249,13 @@ export default function TermsAndConditions({
               <div className="flex items-center gap-2 mb-3">
                 <Scale className="w-5 h-5 text-primary" />
                 <h3 className="text-lg font-semibold text-foreground mb-0">
-                  11. Governing Law
+                  11. Geltendes Recht
                 </h3>
               </div>
               <p className="text-muted-foreground mb-4 leading-relaxed">
-                These Terms shall be interpreted and governed by the laws of the
-                jurisdiction in which Law Funnel operates, without regard to its
-                conflict of law provisions.
+                Diese Bedingungen sind nach den Gesetzen der Jurisdiktion, in
+                der Law Funnel tätig ist, zu interpretieren und zu regeln, ohne
+                Rücksicht auf deren Kollisionsrecht.
               </p>
             </div>
 
@@ -255,12 +264,12 @@ export default function TermsAndConditions({
               <div className="flex items-center gap-2 mb-3">
                 <Mail className="w-5 h-5 text-primary" />
                 <h3 className="text-lg font-semibold text-foreground mb-0">
-                  12. Contact Information
+                  12. Kontaktinformationen
                 </h3>
               </div>
               <p className="text-muted-foreground mb-4 leading-relaxed">
-                If you have any questions about these Terms and Conditions,
-                please contact us at legal@lawfunnel.com
+                Wenn Sie Fragen zu diesen Allgemeinen Geschäftsbedingungen
+                haben, kontaktieren Sie uns bitte unter legal@lawfunnel.com
               </p>
             </div>
 
@@ -278,7 +287,7 @@ export default function TermsAndConditions({
             onClick={onClose}
             className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3 px-4 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 shadow-sm hover:shadow-md"
           >
-            I Understand & Close
+            Ich verstehe & Schließen
           </button>
         </div>
       </div>
