@@ -21,8 +21,8 @@ export default function ClientTypeSelection({
   };
 
   return (
-    <div className="bg-background rounded-lg p-4 border border-border">
-      <div className="mb-4">
+    <div className="bg-background rounded-lg p-3 md:p-4 border border-border">
+      <div className="mb-3 md:mb-4">
         <div className="flex items-center gap-2 mb-2">
           <div className="w-6 h-6 bg-emerald-50 rounded-md flex items-center justify-center">
             <svg
@@ -39,7 +39,7 @@ export default function ClientTypeSelection({
               />
             </svg>
           </div>
-          <h2 className="text-lg font-semibold text-foreground">
+          <h2 className="text-base md:text-lg font-semibold text-foreground">
             Kundentyp auswählen
           </h2>
         </div>
@@ -49,10 +49,10 @@ export default function ClientTypeSelection({
         </p>
       </div>
 
-      <div className="space-y-2 mb-4">
+      <div className="space-y-2 mb-3 md:mb-4">
         <button
           onClick={() => setClientType("company")}
-          className={`w-full p-3 rounded-md border transition-all duration-200 text-left ${
+          className={`w-full p-2.5 md:p-3 rounded-md border transition-all duration-200 text-left ${
             clientType === "company"
               ? "border-emerald-500 bg-emerald-50"
               : "border-border hover:border-emerald-200 hover:bg-accent"
@@ -83,7 +83,7 @@ export default function ClientTypeSelection({
 
         <button
           onClick={() => setClientType("private")}
-          className={`w-full p-3 rounded-md border transition-all duration-200 text-left ${
+          className={`w-full p-2.5 md:p-3 rounded-md border transition-all duration-200 text-left ${
             clientType === "private"
               ? "border-emerald-500 bg-emerald-50"
               : "border-border hover:border-emerald-200 hover:bg-accent"
@@ -113,18 +113,18 @@ export default function ClientTypeSelection({
         </button>
       </div>
 
-      <div className="flex gap-3 pt-3">
+      <div className="flex flex-col md:flex-row gap-3 pt-3">
         <button
           type="button"
           onClick={onBack}
-          className="px-4 py-2 text-sm border border-border text-muted-foreground rounded-md hover:bg-accent transition-colors"
+          className="w-full md:w-auto px-4 py-2 text-sm border border-border text-muted-foreground rounded-md hover:bg-accent transition-colors order-2 md:order-1"
         >
           Zurück
         </button>
         <button
           type="button"
           onClick={handleSubmit}
-          className="flex-1 py-2 px-4 text-sm rounded-md font-medium bg-emerald-600 hover:bg-emerald-700 text-white transition-colors"
+          className="w-full md:flex-1 py-2 px-4 text-sm rounded-md font-medium bg-emerald-600 hover:bg-emerald-700 text-white transition-colors order-1 md:order-2"
         >
           Weiter zum Hochladen
         </button>

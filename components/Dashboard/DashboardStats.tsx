@@ -19,18 +19,18 @@ export default function DashboardStats() {
 
   if (loading) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
         {[1, 2, 3, 4].map((i) => (
           <div
             key={i}
-            className="bg-white rounded-2xl p-6 border border-gray-100 animate-pulse"
+            className="bg-white rounded-lg md:rounded-2xl p-3 md:p-6 border border-gray-100 animate-pulse"
           >
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="h-4 bg-gray-200 rounded w-20 mb-2"></div>
-                <div className="h-8 bg-gray-200 rounded w-12"></div>
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+              <div className="flex-1">
+                <div className="h-3 md:h-4 bg-gray-200 rounded w-12 md:w-20 mb-1 md:mb-2"></div>
+                <div className="h-5 md:h-8 bg-gray-200 rounded w-8 md:w-12"></div>
               </div>
-              <div className="w-12 h-12 bg-gray-200 rounded-xl"></div>
+              <div className="w-8 h-8 md:w-12 md:h-12 bg-gray-200 rounded-md md:rounded-xl mt-2 md:mt-0 self-end md:self-auto"></div>
             </div>
           </div>
         ))}
@@ -40,11 +40,11 @@ export default function DashboardStats() {
 
   if (error) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="col-span-full bg-red-50 border border-red-200 rounded-lg p-4">
-          <div className="flex items-center space-x-3">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
+        <div className="col-span-2 lg:col-span-4 bg-red-50 border border-red-200 rounded-lg p-3 md:p-4">
+          <div className="flex items-start space-x-2">
             <svg
-              className="w-5 h-5 text-red-600"
+              className="w-4 h-4 text-red-600 flex-shrink-0 mt-0.5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -56,11 +56,11 @@ export default function DashboardStats() {
                 d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
-            <div>
-              <p className="text-sm font-medium text-red-800">
-                Statistiken können nicht geladen werden
+            <div className="min-w-0">
+              <p className="text-xs md:text-sm font-medium text-red-800 leading-tight">
+                Fehler beim Laden
               </p>
-              <p className="text-xs text-red-600">{error}</p>
+              <p className="text-xs text-red-600 mt-0.5 break-words">{error}</p>
             </div>
           </div>
         </div>
@@ -68,17 +68,23 @@ export default function DashboardStats() {
     );
   }
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      <div className="bg-white rounded-2xl p-6 border border-gray-100">
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-sm font-medium text-gray-600">Fälle gesamt</p>
-            <p className="text-2xl font-bold text-gray-900">{totalCases}</p>
-            <p className="text-xs text-gray-500 mt-1">Gesamte Bearbeitung</p>
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
+      <div className="bg-white rounded-lg md:rounded-2xl p-3 md:p-6 border border-gray-100">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between h-full">
+          <div className="flex-1 min-w-0">
+            <p className="text-xs md:text-sm font-medium text-gray-600 leading-tight">
+              Gesamt
+            </p>
+            <p className="text-lg md:text-2xl font-bold text-gray-900 leading-tight">
+              {totalCases}
+            </p>
+            <p className="text-xs text-gray-500 leading-tight hidden md:block">
+              Gesamte Bearbeitung
+            </p>
           </div>
-          <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+          <div className="w-8 h-8 md:w-12 md:h-12 bg-blue-100 rounded-md md:rounded-xl flex items-center justify-center mt-2 md:mt-0 self-end md:self-auto flex-shrink-0">
             <svg
-              className="w-6 h-6 text-blue-600"
+              className="w-4 h-4 md:w-6 md:h-6 text-blue-600"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -94,18 +100,22 @@ export default function DashboardStats() {
         </div>
       </div>
 
-      <div className="bg-white rounded-2xl p-6 border border-gray-100">
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-sm font-medium text-gray-600">
-              Letzte Aktivität
+      <div className="bg-white rounded-lg md:rounded-2xl p-3 md:p-6 border border-gray-100">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between h-full">
+          <div className="flex-1 min-w-0">
+            <p className="text-xs md:text-sm font-medium text-gray-600 leading-tight">
+              Letzte 30T
             </p>
-            <p className="text-2xl font-bold text-gray-900">{recentActivity}</p>
-            <p className="text-xs text-gray-500 mt-1">Letzte 30 Tage</p>
+            <p className="text-lg md:text-2xl font-bold text-gray-900 leading-tight">
+              {recentActivity}
+            </p>
+            <p className="text-xs text-gray-500 leading-tight hidden md:block">
+              Letzte 30 Tage
+            </p>
           </div>
-          <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+          <div className="w-8 h-8 md:w-12 md:h-12 bg-green-100 rounded-md md:rounded-xl flex items-center justify-center mt-2 md:mt-0 self-end md:self-auto flex-shrink-0">
             <svg
-              className="w-6 h-6 text-green-600"
+              className="w-4 h-4 md:w-6 md:h-6 text-green-600"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -121,18 +131,22 @@ export default function DashboardStats() {
         </div>
       </div>
 
-      <div className="bg-white rounded-2xl p-6 border border-gray-100">
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-sm font-medium text-gray-600">Abschlussrate</p>
-            <p className="text-2xl font-bold text-gray-900">{successRate}%</p>
-            <p className="text-xs text-gray-500 mt-1">
+      <div className="bg-white rounded-lg md:rounded-2xl p-3 md:p-6 border border-gray-100">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between h-full">
+          <div className="flex-1 min-w-0">
+            <p className="text-xs md:text-sm font-medium text-gray-600 leading-tight">
+              Erfolg
+            </p>
+            <p className="text-lg md:text-2xl font-bold text-gray-900 leading-tight">
+              {successRate}%
+            </p>
+            <p className="text-xs text-gray-500 leading-tight hidden md:block">
               {completedCases} von {totalCases} abgeschlossen
             </p>
           </div>
-          <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
+          <div className="w-8 h-8 md:w-12 md:h-12 bg-purple-100 rounded-md md:rounded-xl flex items-center justify-center mt-2 md:mt-0 self-end md:self-auto flex-shrink-0">
             <svg
-              className="w-6 h-6 text-purple-600"
+              className="w-4 h-4 md:w-6 md:h-6 text-purple-600"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -141,28 +155,32 @@ export default function DashboardStats() {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth={2}
-                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                d="M13 10V3L4 14h7v7l9-11h-7z"
               />
             </svg>
           </div>
         </div>
       </div>
 
-      <div className="bg-white rounded-2xl p-6 border border-gray-100">
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-sm font-medium text-gray-600">In Bearbeitung</p>
-            <p className="text-2xl font-bold text-gray-900">
+      <div className="bg-white rounded-lg md:rounded-2xl p-3 md:p-6 border border-gray-100">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between h-full">
+          <div className="flex-1 min-w-0">
+            <p className="text-xs md:text-sm font-medium text-gray-600 leading-tight">
+              Aktiv
+            </p>
+            <p className="text-lg md:text-2xl font-bold text-gray-900 leading-tight">
               {(statistics?.byStatus[CaseStatus.DRAFT] || 0) +
                 (statistics?.byStatus[CaseStatus.QUALIFICATION_COMPLETE] || 0) +
                 (statistics?.byStatus[CaseStatus.SIGNATURE_COMPLETE] || 0) +
                 (statistics?.byStatus[CaseStatus.CLIENT_TYPE_SELECTED] || 0)}
             </p>
-            <p className="text-xs text-gray-500 mt-1">Aktive Workflows</p>
+            <p className="text-xs text-gray-500 leading-tight hidden md:block">
+              Aktive Workflows
+            </p>
           </div>
-          <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center">
+          <div className="w-8 h-8 md:w-12 md:h-12 bg-orange-100 rounded-md md:rounded-xl flex items-center justify-center mt-2 md:mt-0 self-end md:self-auto flex-shrink-0">
             <svg
-              className="w-6 h-6 text-orange-600"
+              className="w-4 h-4 md:w-6 md:h-6 text-orange-600"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"

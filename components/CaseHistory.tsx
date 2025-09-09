@@ -105,7 +105,7 @@ export default function CaseHistory({ onNavigateBack }: CaseHistoryProps) {
   return (
     <div className="min-h-screen bg-background">
       <div className="bg-card border-b border-border/50">
-        <div className="max-w-5xl mx-auto px-6 py-6">
+        <div className="max-w-5xl mx-auto px-4 md:px-6 py-4 md:py-6">
           <div className="flex items-center gap-4">
             <button
               onClick={onNavigateBack}
@@ -126,7 +126,7 @@ export default function CaseHistory({ onNavigateBack }: CaseHistoryProps) {
               </svg>
             </button>
             <div>
-              <h1 className="text-2xl font-bold text-foreground mb-1">
+              <h1 className="text-xl md:text-2xl font-bold text-foreground mb-1">
                 Case History
               </h1>
               <p className="text-muted-foreground text-sm">
@@ -137,11 +137,11 @@ export default function CaseHistory({ onNavigateBack }: CaseHistoryProps) {
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto px-6 py-6">
-        <div className="bg-card rounded-lg border border-border/50 p-4 mb-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <label className="text-sm font-medium text-foreground">
+      <div className="max-w-5xl mx-auto px-4 md:px-6 py-4 md:py-6">
+        <div className="bg-card rounded-lg border border-border/50 p-3 md:p-4 mb-4">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
+            <div className="flex flex-col md:flex-row md:items-center gap-3">
+              <label className="text-sm font-medium text-foreground whitespace-nowrap">
                 Filter:
               </label>
               <select
@@ -150,7 +150,7 @@ export default function CaseHistory({ onNavigateBack }: CaseHistoryProps) {
                   setSelectedStatus(e.target.value as CaseStatus | "all");
                   setCurrentPage(1);
                 }}
-                className="border border-border rounded-md px-3 py-1.5 text-sm bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                className="flex-1 md:flex-none border border-border rounded-md px-3 py-1.5 text-sm bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
               >
                 <option value="all">All Cases</option>
                 <option value={CaseStatus.DRAFT}>Draft</option>
@@ -170,15 +170,15 @@ export default function CaseHistory({ onNavigateBack }: CaseHistoryProps) {
                 <option value={CaseStatus.CANCELLED}>Cancelled</option>
               </select>
             </div>
-            <div className="text-sm text-muted-foreground">
+            <div className="text-sm text-muted-foreground mt-2 md:mt-0">
               {cases.length} cases
             </div>
           </div>
         </div>
 
         {error && (
-          <div className="bg-destructive/5 border border-destructive/20 rounded-lg p-4 mb-4">
-            <div className="flex items-start gap-3">
+          <div className="bg-destructive/5 border border-destructive/20 rounded-lg p-3 md:p-4 mb-4">
+            <div className="flex items-start gap-2 md:gap-3">
               <div className="w-8 h-8 bg-destructive/10 rounded-lg flex items-center justify-center flex-shrink-0">
                 <svg
                   className="w-4 h-4 text-destructive"
@@ -205,9 +205,9 @@ export default function CaseHistory({ onNavigateBack }: CaseHistoryProps) {
         )}
 
         {loading ? (
-          <div className="bg-card rounded-lg border border-border/50 p-12 text-center">
-            <div className="w-10 h-10 bg-accent rounded-lg flex items-center justify-center mx-auto mb-4">
-              <div className="inline-block animate-spin rounded-full h-5 w-5 border-2 border-muted-foreground/30 border-t-primary"></div>
+          <div className="bg-card rounded-lg border border-border/50 p-8 md:p-12 text-center">
+            <div className="w-8 h-8 md:w-10 md:h-10 bg-accent rounded-lg flex items-center justify-center mx-auto mb-4">
+              <div className="inline-block animate-spin rounded-full h-4 w-4 md:h-5 md:w-5 border-2 border-muted-foreground/30 border-t-primary"></div>
             </div>
             <h3 className="text-lg font-semibold text-foreground mb-2">
               Loading cases...
@@ -219,10 +219,10 @@ export default function CaseHistory({ onNavigateBack }: CaseHistoryProps) {
         ) : (
           <div className="bg-card rounded-lg border border-border/50 overflow-hidden">
             {cases.length === 0 ? (
-              <div className="p-12 text-center">
-                <div className="w-12 h-12 bg-accent rounded-lg flex items-center justify-center mx-auto mb-4">
+              <div className="p-8 md:p-12 text-center">
+                <div className="w-10 h-10 md:w-12 md:h-12 bg-accent rounded-lg flex items-center justify-center mx-auto mb-4">
                   <svg
-                    className="w-6 h-6 text-muted-foreground"
+                    className="w-5 h-5 md:w-6 md:h-6 text-muted-foreground"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -235,17 +235,17 @@ export default function CaseHistory({ onNavigateBack }: CaseHistoryProps) {
                     />
                   </svg>
                 </div>
-                <h3 className="text-lg font-semibold text-foreground mb-2">
+                <h3 className="text-base md:text-lg font-semibold text-foreground mb-2">
                   No cases found
                 </h3>
-                <p className="text-muted-foreground mb-6 max-w-md mx-auto text-sm">
+                <p className="text-muted-foreground mb-4 md:mb-6 max-w-md mx-auto text-sm">
                   {selectedStatus === "all"
                     ? "You haven't created any cases yet. Start by creating your first payment notice case."
                     : `No cases found with status "${selectedStatus}". Try adjusting your filter or create a new case.`}
                 </p>
                 <button
                   onClick={onNavigateBack}
-                  className="bg-primary text-primary-foreground px-6 py-2.5 rounded-lg hover:bg-primary/90 transition-all duration-200 font-medium text-sm"
+                  className="bg-primary text-primary-foreground px-4 md:px-6 py-2 md:py-2.5 rounded-lg hover:bg-primary/90 transition-all duration-200 font-medium text-sm"
                 >
                   Create Your First Case
                 </button>
@@ -255,19 +255,19 @@ export default function CaseHistory({ onNavigateBack }: CaseHistoryProps) {
                 {cases.map((case_) => (
                   <div
                     key={case_.id}
-                    className="p-5 hover:bg-accent/30 transition-all duration-200"
+                    className="p-4 md:p-5 hover:bg-accent/30 transition-all duration-200"
                   >
-                    <div className="flex items-start justify-between">
+                    <div className="flex flex-col md:flex-row md:items-start justify-between">
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-3 mb-3">
-                          <h3 className="text-lg font-semibold text-foreground truncate">
+                        <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-3 mb-3">
+                          <h3 className="text-base md:text-lg font-semibold text-foreground truncate">
                             {case_.title || case_.caseNumber}
                           </h3>
                           {getStatusBadge(case_.status)}
                         </div>
 
-                        <div className="space-y-3">
-                          <div className="flex items-center gap-6 text-sm">
+                        <div className="space-y-2 md:space-y-3">
+                          <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-6 text-sm">
                             <div className="flex items-center gap-2">
                               <span className="text-muted-foreground">
                                 Case:
@@ -296,12 +296,12 @@ export default function CaseHistory({ onNavigateBack }: CaseHistoryProps) {
                             )}
                           </div>
 
-                          <div className="flex items-center gap-4 text-sm">
+                          <div className="flex flex-wrap items-center gap-2 md:gap-4 text-sm">
                             <div className="flex items-center gap-2">
                               {case_.legalQualificationAnswers ? (
-                                <div className="w-5 h-5 bg-emerald-500 rounded-full flex items-center justify-center">
+                                <div className="w-4 h-4 md:w-5 md:h-5 bg-emerald-500 rounded-full flex items-center justify-center">
                                   <svg
-                                    className="w-3 h-3 text-white"
+                                    className="w-2 h-2 md:w-3 md:h-3 text-white"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -323,9 +323,9 @@ export default function CaseHistory({ onNavigateBack }: CaseHistoryProps) {
                             </div>
                             <div className="flex items-center gap-2">
                               {case_.isDigitalSignatureCompleted ? (
-                                <div className="w-5 h-5 bg-emerald-500 rounded-full flex items-center justify-center">
+                                <div className="w-4 h-4 md:w-5 md:h-5 bg-emerald-500 rounded-full flex items-center justify-center">
                                   <svg
-                                    className="w-3 h-3 text-white"
+                                    className="w-2 h-2 md:w-3 md:h-3 text-white"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -347,9 +347,9 @@ export default function CaseHistory({ onNavigateBack }: CaseHistoryProps) {
                             </div>
                             <div className="flex items-center gap-2">
                               {case_.clientType ? (
-                                <div className="w-5 h-5 bg-emerald-500 rounded-full flex items-center justify-center">
+                                <div className="w-4 h-4 md:w-5 md:h-5 bg-emerald-500 rounded-full flex items-center justify-center">
                                   <svg
-                                    className="w-3 h-3 text-white"
+                                    className="w-2 h-2 md:w-3 md:h-3 text-white"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -372,9 +372,9 @@ export default function CaseHistory({ onNavigateBack }: CaseHistoryProps) {
                             </div>
                             <div className="flex items-center gap-2">
                               {case_.isNoticeGenerated ? (
-                                <div className="w-5 h-5 bg-emerald-500 rounded-full flex items-center justify-center">
+                                <div className="w-4 h-4 md:w-5 md:h-5 bg-emerald-500 rounded-full flex items-center justify-center">
                                   <svg
-                                    className="w-3 h-3 text-white"
+                                    className="w-2 h-2 md:w-3 md:h-3 text-white"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -397,7 +397,7 @@ export default function CaseHistory({ onNavigateBack }: CaseHistoryProps) {
                             {case_.legalQualificationAnswers && (
                               <button
                                 onClick={() => toggleCaseExpansion(case_.id)}
-                                className="flex items-center gap-1 text-foreground hover:text-primary font-medium px-2 py-1 rounded hover:bg-accent transition-all duration-200 ml-auto"
+                                className="flex items-center gap-1 text-foreground hover:text-primary font-medium px-2 py-1 rounded hover:bg-accent transition-all duration-200 ml-auto mt-2 md:mt-0"
                               >
                                 <span className="text-sm">Details</span>
                                 <svg
@@ -423,25 +423,25 @@ export default function CaseHistory({ onNavigateBack }: CaseHistoryProps) {
 
                           {expandedCases.has(case_.id) &&
                             case_.legalQualificationAnswers && (
-                              <div className="mt-4 pt-4 border-t border-border/50">
-                                <h4 className="text-sm font-semibold text-foreground mb-3">
+                              <div className="mt-3 md:mt-4 pt-3 md:pt-4 border-t border-border/50">
+                                <h4 className="text-xs md:text-sm font-semibold text-foreground mb-2 md:mb-3">
                                   Legal Qualification Details
                                 </h4>
-                                <div className="bg-accent/30 rounded-lg p-4 space-y-4">
+                                <div className="bg-accent/30 rounded-lg p-3 md:p-4 space-y-3 md:space-y-4">
                                   <div>
-                                    <h5 className="font-medium text-foreground mb-2 text-sm">
+                                    <h5 className="font-medium text-foreground mb-1 md:mb-2 text-xs md:text-sm">
                                       Contract Situation
                                     </h5>
-                                    <p className="text-muted-foreground text-sm bg-card p-3 rounded border border-border/50">
+                                    <p className="text-muted-foreground text-xs md:text-sm bg-card p-2 md:p-3 rounded border border-border/50">
                                       {
                                         case_.legalQualificationAnswers
                                           .contractSituation
                                       }
                                     </p>
                                   </div>
-                                  <div className="grid grid-cols-1 gap-3">
-                                    <div className="bg-card p-3 rounded border border-border/50">
-                                      <h5 className="font-medium text-foreground mb-1 text-sm">
+                                  <div className="grid grid-cols-1 gap-2 md:gap-3">
+                                    <div className="bg-card p-2 md:p-3 rounded border border-border/50">
+                                      <h5 className="font-medium text-foreground mb-1 text-xs md:text-sm">
                                         Invoice Sent
                                       </h5>
                                       <p className="text-muted-foreground text-sm">
@@ -454,7 +454,7 @@ export default function CaseHistory({ onNavigateBack }: CaseHistoryProps) {
                                   </div>
                                   {case_.legalQualificationAnswers
                                     .completedAt && (
-                                    <div className="pt-3 border-t border-border/50">
+                                    <div className="pt-2 md:pt-3 border-t border-border/50">
                                       <p className="text-muted-foreground text-sm">
                                         <span className="font-medium">
                                           Completed:
@@ -472,12 +472,12 @@ export default function CaseHistory({ onNavigateBack }: CaseHistoryProps) {
                         </div>
                       </div>
 
-                      <div className="flex items-start ml-4">
+                      <div className="flex items-start ml-2 md:ml-4 mt-2 md:mt-0">
                         {case_.status !== CaseStatus.COMPLETED &&
                           case_.status !== CaseStatus.NOTICE_GENERATED && (
                             <button
                               onClick={() => setShowDeleteConfirm(case_.id)}
-                              className="flex items-center justify-center w-8 h-8 text-destructive/60 hover:text-destructive hover:bg-destructive/10 rounded-lg transition-all duration-200"
+                              className="flex items-center justify-center w-7 h-7 md:w-8 md:h-8 text-destructive/60 hover:text-destructive hover:bg-destructive/10 rounded-lg transition-all duration-200"
                               title="Delete case"
                             >
                               <svg
@@ -505,11 +505,11 @@ export default function CaseHistory({ onNavigateBack }: CaseHistoryProps) {
         )}
 
         {totalPages > 1 && (
-          <div className="flex items-center justify-between mt-6">
+          <div className="flex flex-col md:flex-row md:items-center justify-between mt-4 md:mt-6 gap-4 md:gap-0">
             <div className="text-muted-foreground text-sm">
               Page {currentPage} of {totalPages}
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 justify-center md:justify-start">
               <button
                 onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
                 disabled={currentPage === 1}
@@ -533,10 +533,10 @@ export default function CaseHistory({ onNavigateBack }: CaseHistoryProps) {
 
       {showDeleteConfirm && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-card rounded-lg p-6 max-w-sm w-full mx-4 border border-border">
-            <div className="w-10 h-10 bg-destructive/10 rounded-lg flex items-center justify-center mx-auto mb-4">
+          <div className="bg-card rounded-lg p-4 md:p-6 max-w-sm w-full mx-4 border border-border">
+            <div className="w-8 h-8 md:w-10 md:h-10 bg-destructive/10 rounded-lg flex items-center justify-center mx-auto mb-3 md:mb-4">
               <svg
-                className="w-5 h-5 text-destructive"
+                className="w-4 h-4 md:w-5 md:h-5 text-destructive"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -549,23 +549,23 @@ export default function CaseHistory({ onNavigateBack }: CaseHistoryProps) {
                 />
               </svg>
             </div>
-            <h3 className="text-lg font-semibold text-foreground mb-2 text-center">
+            <h3 className="text-base md:text-lg font-semibold text-foreground mb-2 text-center">
               Delete Case
             </h3>
-            <p className="text-muted-foreground mb-6 text-center text-sm">
+            <p className="text-muted-foreground mb-4 md:mb-6 text-center text-sm">
               Are you sure you want to delete this case? This action cannot be
               undone and all associated data will be permanently removed.
             </p>
-            <div className="flex gap-3">
+            <div className="flex flex-col md:flex-row gap-3">
               <button
                 onClick={() => setShowDeleteConfirm(null)}
-                className="flex-1 px-4 py-2 border border-border text-foreground rounded-lg hover:bg-accent transition-all duration-200 font-medium text-sm"
+                className="flex-1 px-3 md:px-4 py-2 border border-border text-foreground rounded-lg hover:bg-accent transition-all duration-200 font-medium text-sm order-2 md:order-1"
               >
                 Cancel
               </button>
               <button
                 onClick={() => handleDeleteCase(showDeleteConfirm)}
-                className="flex-1 px-4 py-2 bg-destructive text-destructive-foreground rounded-lg hover:bg-destructive/90 transition-all duration-200 font-medium text-sm"
+                className="flex-1 px-3 md:px-4 py-2 bg-destructive text-destructive-foreground rounded-lg hover:bg-destructive/90 transition-all duration-200 font-medium text-sm order-1 md:order-2"
               >
                 Delete
               </button>

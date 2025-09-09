@@ -117,7 +117,7 @@ export default function LegalQualification({
   );
 
   return (
-    <div className="bg-card rounded-lg p-6 border border-border">
+    <div className="bg-card rounded-lg p-4 md:p-6 border border-border">
       <div className="mb-6">
         <div className="flex items-center gap-3 mb-3">
           <div className="w-7 h-7 bg-emerald-100 rounded-md flex items-center justify-center">
@@ -204,7 +204,7 @@ export default function LegalQualification({
           <div>
             <label
               htmlFor="contractSituation"
-              className="block text-sm font-medium text-foreground mb-3"
+              className="block text-sm font-medium text-foreground mb-2 md:mb-3"
             >
               Vertragsdetails <span className="text-destructive">*</span>
             </label>
@@ -212,7 +212,7 @@ export default function LegalQualification({
               <textarea
                 id="contractSituation"
                 rows={5}
-                className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all resize-none text-sm leading-relaxed ${
+                className={`w-full px-3 md:px-4 py-2 md:py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all resize-none text-sm leading-relaxed ${
                   errors.contractSituation
                     ? "border-destructive bg-destructive/5"
                     : "border-border hover:border-emerald-300"
@@ -254,7 +254,7 @@ export default function LegalQualification({
           </div>
 
           {/* Invoice Date */}
-          <div className="bg-slate-50 rounded-lg p-4 border">
+          <div className="bg-slate-50 rounded-lg p-3 md:p-4 border">
             <div className="flex items-center gap-2 mb-3">
               <svg
                 className="w-5 h-5 text-emerald-600"
@@ -274,7 +274,7 @@ export default function LegalQualification({
               </h3>
             </div>
 
-            <div className="max-w-sm">
+            <div className="max-w-full md:max-w-sm">
               <label
                 htmlFor="invoiceSentDate"
                 className="block text-sm font-medium text-foreground mb-2"
@@ -331,7 +331,7 @@ export default function LegalQualification({
           </div>
         </div>
 
-        <div className="bg-amber-50 border border-amber-200 rounded-md p-3">
+        <div className="bg-amber-50 border border-amber-200 rounded-md p-2 md:p-3">
           <div className="flex items-start gap-2">
             <svg
               className="w-4 h-4 text-amber-600 mt-0.5 flex-shrink-0"
@@ -360,12 +360,12 @@ export default function LegalQualification({
           </div>
         </div>
 
-        <div className="flex gap-3 pt-4 border-t border-border">
+        <div className="flex flex-col md:flex-row gap-3 pt-4 border-t border-border">
           {onBack && (
             <button
               type="button"
               onClick={onBack}
-              className="px-6 py-2 border border-border text-foreground rounded-md hover:bg-muted transition-colors text-sm font-medium"
+              className="w-full md:w-auto px-6 py-2 border border-border text-foreground rounded-md hover:bg-muted transition-colors text-sm font-medium order-2 md:order-1"
             >
               Zurück
             </button>
@@ -373,7 +373,7 @@ export default function LegalQualification({
           <button
             type="submit"
             disabled={!isFormValid || loading}
-            className={`flex-1 py-2 px-6 rounded-md text-sm font-medium transition-all flex items-center justify-center gap-2 ${
+            className={`w-full md:flex-1 py-2 px-6 rounded-md text-sm font-medium transition-all flex items-center justify-center gap-2 order-1 md:order-2 ${
               isFormValid && !loading
                 ? "bg-emerald-600 hover:bg-emerald-700 text-white"
                 : "bg-muted text-muted-foreground cursor-not-allowed"

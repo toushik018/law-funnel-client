@@ -20,8 +20,8 @@ export default function InvoiceUpload({
   };
 
   return (
-    <div className="bg-card rounded-lg p-4 border border-border">
-      <div className="mb-4">
+    <div className="bg-card rounded-lg p-3 md:p-4 border border-border">
+      <div className="mb-3 md:mb-4">
         <div className="flex items-center space-x-2 mb-2">
           <div className="w-6 h-6 bg-primary/10 rounded-md flex items-center justify-center">
             <svg
@@ -38,7 +38,7 @@ export default function InvoiceUpload({
               />
             </svg>
           </div>
-          <h2 className="text-lg font-semibold text-foreground">
+          <h2 className="text-base md:text-lg font-semibold text-foreground">
             Rechnung hochladen
           </h2>
         </div>
@@ -48,11 +48,11 @@ export default function InvoiceUpload({
         </p>
       </div>
 
-      <div className="mb-4 p-3 bg-warning/5 border border-warning/20 rounded-md">
+      <div className="mb-3 md:mb-4 p-2.5 md:p-3 bg-warning/5 border border-warning/20 rounded-md">
         <label className="flex items-start space-x-2 cursor-pointer">
           <input
             type="checkbox"
-            className="w-4 h-4 text-primary border-warning/30 rounded focus:ring-primary mt-0.5 flex-shrink-0"
+            className="w-3.5 h-3.5 md:w-4 md:h-4 text-primary border-warning/30 rounded focus:ring-primary mt-0.5 flex-shrink-0"
             checked={invoiceCorrectnessConfirmed}
             onChange={(e) => setInvoiceCorrectnessConfirmed(e.target.checked)}
           />
@@ -75,7 +75,7 @@ export default function InvoiceUpload({
         disabled={!invoiceCorrectnessConfirmed}
       />
 
-      <div className="mt-3 p-3 bg-muted/30 rounded-md border border-muted">
+      <div className="mt-2 md:mt-3 p-2.5 md:p-3 bg-muted/30 rounded-md border border-muted">
         <div className="flex items-start space-x-2">
           <svg
             className="w-4 h-4 text-muted-foreground mt-0.5 flex-shrink-0"
@@ -103,11 +103,11 @@ export default function InvoiceUpload({
         </div>
       </div>
 
-      <div className="flex space-x-3 pt-3">
+      <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-3 pt-3">
         <button
           type="button"
           onClick={onBack}
-          className="px-4 py-1.5 border border-border text-muted-foreground rounded-md hover:bg-muted/50 transition-colors text-sm"
+          className="w-full md:w-auto px-4 py-1.5 border border-border text-muted-foreground rounded-md hover:bg-muted/50 transition-colors text-sm order-2 md:order-1"
         >
           Zurück
         </button>

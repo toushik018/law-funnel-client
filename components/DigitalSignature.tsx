@@ -150,9 +150,9 @@ export default function DigitalSignature({
   };
 
   return (
-    <div className="bg-background rounded-xl p-4 border border-border shadow-sm">
-      <div className="mb-4">
-        <div className="flex items-center gap-2 mb-3">
+    <div className="bg-background rounded-xl p-3 md:p-4 border border-border shadow-sm">
+      <div className="mb-3 md:mb-4">
+        <div className="flex items-center gap-2 mb-2 md:mb-3">
           <div className="w-6 h-6 bg-emerald-50 rounded-md flex items-center justify-center">
             <svg
               className="w-4 h-4 text-emerald-600"
@@ -168,7 +168,7 @@ export default function DigitalSignature({
               />
             </svg>
           </div>
-          <h2 className="text-lg font-semibold text-foreground">
+          <h2 className="text-base md:text-lg font-semibold text-foreground">
             Digitale Unterschrift & Vollmacht
           </h2>
         </div>
@@ -178,9 +178,9 @@ export default function DigitalSignature({
         </p>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-3 md:space-y-4">
         {(error || localError) && (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+          <div className="bg-red-50 border border-red-200 rounded-lg p-2.5 md:p-3">
             <div className="flex items-start gap-2">
               <svg
                 className="w-4 h-4 text-red-600 mt-0.5 flex-shrink-0"
@@ -206,7 +206,7 @@ export default function DigitalSignature({
         )}
 
         {currentCase?.isDigitalSignatureCompleted && (
-          <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-3">
+          <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-2.5 md:p-3">
             <div className="flex items-start gap-2">
               <svg
                 className="w-4 h-4 text-emerald-600 mt-0.5 flex-shrink-0"
@@ -240,7 +240,7 @@ export default function DigitalSignature({
           </label>
           <div
             ref={containerRef}
-            className="border border-dashed border-border rounded-lg p-2"
+            className="border border-dashed border-border rounded-lg p-1.5 md:p-2"
           >
             <div
               className="border border-border rounded bg-background"
@@ -273,7 +273,7 @@ export default function DigitalSignature({
                 dotSize={1}
               />
             </div>
-            <div className="flex justify-between items-center mt-2 px-1">
+            <div className="flex justify-between items-center mt-1.5 md:mt-2 px-1">
               <p className="text-xs text-muted-foreground">
                 Unterschreiben Sie oben mit Ihrer Maus oder Ihrem Touchgerät
               </p>
@@ -288,13 +288,13 @@ export default function DigitalSignature({
           </div>
         </div>
 
-        <div className="bg-amber-50 border border-amber-200 rounded-lg p-3">
+        <div className="bg-amber-50 border border-amber-200 rounded-lg p-2.5 md:p-3">
           <label className="flex items-start gap-2 cursor-pointer">
             <input
               type="checkbox"
               checked={powerOfAttorneyConfirmed}
               onChange={(e) => setPowerOfAttorneyConfirmed(e.target.checked)}
-              className="w-4 h-4 text-emerald-600 border-amber-300 rounded focus:ring-emerald-500 mt-0.5 flex-shrink-0"
+              className="w-3.5 h-3.5 md:w-4 md:h-4 text-emerald-600 border-amber-300 rounded focus:ring-emerald-500 mt-0.5 flex-shrink-0"
             />
             <div>
               <p className="text-xs font-medium text-amber-800">
@@ -313,7 +313,7 @@ export default function DigitalSignature({
           </label>
         </div>
 
-        <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+        <div className="bg-red-50 border border-red-200 rounded-lg p-2.5 md:p-3">
           <div className="flex items-start gap-2">
             <svg
               className="w-4 h-4 text-red-600 mt-0.5 flex-shrink-0"
@@ -342,11 +342,11 @@ export default function DigitalSignature({
           </div>
         </div>
 
-        <div className="flex gap-3 pt-3">
+        <div className="flex flex-col md:flex-row gap-3 pt-3">
           <button
             type="button"
             onClick={onBack}
-            className="px-4 py-2 border border-border text-muted-foreground rounded-lg hover:bg-muted transition-colors text-sm"
+            className="w-full md:w-auto px-4 py-2 border border-border text-muted-foreground rounded-lg hover:bg-muted transition-colors text-sm order-2 md:order-1"
           >
             Zurück
           </button>
@@ -354,7 +354,7 @@ export default function DigitalSignature({
             type="button"
             onClick={handleSubmit}
             disabled={!hasSignature || !powerOfAttorneyConfirmed || loading}
-            className={`flex-1 py-2 px-4 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 text-sm ${
+            className={`w-full md:flex-1 py-2 px-4 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 text-sm order-1 md:order-2 ${
               hasSignature && powerOfAttorneyConfirmed && !loading
                 ? "bg-emerald-600 hover:bg-emerald-700 text-white"
                 : "bg-muted text-muted-foreground cursor-not-allowed"

@@ -121,21 +121,22 @@ export default function Profile({ onNavigateBack }: ProfileProps) {
     <div className="min-h-screen bg-background">
       {/* Compact Header */}
       <div className="bg-card border-b border-border">
-        <div className="max-w-5xl mx-auto px-4 py-4">
+        <div className="max-w-5xl mx-auto px-3 md:px-4 py-3 md:py-4">
           <div className="flex items-center justify-between">
             <button
               onClick={handleBack}
-              className="flex items-center gap-2 px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground hover:bg-muted rounded-md transition-colors"
+              className="flex items-center gap-1.5 md:gap-2 px-2 md:px-3 py-1.5 text-xs md:text-sm text-muted-foreground hover:text-foreground hover:bg-muted rounded-md transition-colors"
             >
-              <ArrowLeft className="w-4 h-4" />
-              Zurück
+              <ArrowLeft className="w-3 h-3 md:w-4 md:h-4" />
+              <span className="hidden sm:inline">Zurück</span>
             </button>
 
-            <div className="text-center">
-              <h1 className="text-xl font-bold text-foreground">
-                Profil Dashboard
+            <div className="text-center flex-1 mx-2">
+              <h1 className="text-lg md:text-xl font-bold text-foreground">
+                <span className="hidden sm:inline">Profil Dashboard</span>
+                <span className="sm:hidden">Profil</span>
               </h1>
-              <p className="text-muted-foreground text-xs">
+              <p className="text-muted-foreground text-xs hidden md:block">
                 Verwalten Sie Ihre Informationen
               </p>
             </div>
@@ -143,10 +144,10 @@ export default function Profile({ onNavigateBack }: ProfileProps) {
             {!isEditing && (
               <button
                 onClick={() => setIsEditing(true)}
-                className="flex items-center gap-2 px-4 py-1.5 bg-primary text-primary-foreground text-sm rounded-md hover:bg-primary/90 transition-colors"
+                className="flex items-center gap-1 md:gap-2 px-2 md:px-4 py-1.5 bg-primary text-primary-foreground text-xs md:text-sm rounded-md hover:bg-primary/90 transition-colors"
               >
-                <Edit3 className="w-4 h-4" />
-                Bearbeiten
+                <Edit3 className="w-3 h-3 md:w-4 md:h-4" />
+                <span className="hidden sm:inline">Bearbeiten</span>
               </button>
             )}
           </div>
@@ -154,7 +155,7 @@ export default function Profile({ onNavigateBack }: ProfileProps) {
       </div>
 
       {/* Compact Alerts */}
-      <div className="max-w-5xl mx-auto px-4 pt-3">
+      <div className="max-w-5xl mx-auto px-3 md:px-4 pt-3">
         {error && (
           <div className="bg-destructive/10 border border-destructive/20 text-destructive px-3 py-2 rounded-md text-sm">
             <div className="flex items-center gap-2">
@@ -176,12 +177,12 @@ export default function Profile({ onNavigateBack }: ProfileProps) {
       {/* Ultra-Compact Dashboard Grid */}
       <form
         onSubmit={handleSubmit}
-        className="max-w-5xl mx-auto px-4 py-4 space-y-4"
+        className="max-w-5xl mx-auto px-3 md:px-4 py-3 md:py-4 space-y-3 md:space-y-4"
       >
         {/* Personal & Company Row */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 md:gap-4">
           {/* Personal Info */}
-          <div className="bg-card rounded-lg border border-border p-4">
+          <div className="bg-card rounded-lg border border-border p-3 md:p-4">
             <div className="flex items-center gap-2 mb-3">
               <div className="p-1.5 bg-primary/10 rounded-md">
                 <User className="w-4 h-4 text-primary" />
@@ -190,7 +191,7 @@ export default function Profile({ onNavigateBack }: ProfileProps) {
                 <h2 className="text-sm font-semibold text-card-foreground">
                   Persönlich
                 </h2>
-                <p className="text-muted-foreground text-xs">
+                <p className="text-muted-foreground text-xs hidden sm:block">
                   Grundlegende Angaben
                 </p>
               </div>
@@ -200,7 +201,7 @@ export default function Profile({ onNavigateBack }: ProfileProps) {
                 name="name"
                 disabled={!isEditing}
                 placeholder="Vollständiger Name"
-                className="w-full bg-input border border-border px-3 py-2 text-sm rounded-md disabled:bg-muted disabled:text-muted-foreground focus:ring-1 focus:ring-ring focus:border-primary transition-colors placeholder:text-muted-foreground"
+                className="w-full bg-input border border-border px-3 py-2.5 md:py-2 text-sm rounded-md disabled:bg-muted disabled:text-muted-foreground focus:ring-1 focus:ring-ring focus:border-primary transition-colors placeholder:text-muted-foreground"
                 value={formData.name}
                 onChange={handleChange}
               />
@@ -209,7 +210,7 @@ export default function Profile({ onNavigateBack }: ProfileProps) {
                 type="email"
                 disabled={!isEditing}
                 placeholder="E-Mail-Adresse"
-                className="w-full bg-input border border-border px-3 py-2 text-sm rounded-md disabled:bg-muted disabled:text-muted-foreground focus:ring-1 focus:ring-ring focus:border-primary transition-colors placeholder:text-muted-foreground"
+                className="w-full bg-input border border-border px-3 py-2.5 md:py-2 text-sm rounded-md disabled:bg-muted disabled:text-muted-foreground focus:ring-1 focus:ring-ring focus:border-primary transition-colors placeholder:text-muted-foreground"
                 value={formData.email}
                 onChange={handleChange}
               />
@@ -217,7 +218,7 @@ export default function Profile({ onNavigateBack }: ProfileProps) {
           </div>
 
           {/* Company */}
-          <div className="bg-card rounded-lg border border-border p-4">
+          <div className="bg-card rounded-lg border border-border p-3 md:p-4">
             <div className="flex items-center gap-2 mb-3">
               <div className="p-1.5 bg-secondary/10 rounded-md">
                 <Building2 className="w-4 h-4 text-secondary" />
@@ -226,7 +227,7 @@ export default function Profile({ onNavigateBack }: ProfileProps) {
                 <h2 className="text-sm font-semibold text-card-foreground">
                   Unternehmen
                 </h2>
-                <p className="text-muted-foreground text-xs">
+                <p className="text-muted-foreground text-xs hidden sm:block">
                   Geschäftsinformationen
                 </p>
               </div>
@@ -235,7 +236,7 @@ export default function Profile({ onNavigateBack }: ProfileProps) {
               name="company"
               disabled={!isEditing}
               placeholder="Firmenname"
-              className="w-full bg-input border border-border px-3 py-2 text-sm rounded-md disabled:bg-muted disabled:text-muted-foreground focus:ring-1 focus:ring-ring focus:border-primary transition-colors placeholder:text-muted-foreground"
+              className="w-full bg-input border border-border px-3 py-2.5 md:py-2 text-sm rounded-md disabled:bg-muted disabled:text-muted-foreground focus:ring-1 focus:ring-ring focus:border-primary transition-colors placeholder:text-muted-foreground"
               value={formData.company}
               onChange={handleChange}
             />
@@ -243,7 +244,7 @@ export default function Profile({ onNavigateBack }: ProfileProps) {
         </div>
 
         {/* Contact Details */}
-        <div className="bg-card rounded-lg border border-border p-4">
+        <div className="bg-card rounded-lg border border-border p-3 md:p-4">
           <div className="flex items-center gap-2 mb-3">
             <div className="p-1.5 bg-accent/10 rounded-md">
               <Home className="w-4 h-4 text-accent" />
@@ -252,7 +253,7 @@ export default function Profile({ onNavigateBack }: ProfileProps) {
               <h2 className="text-sm font-semibold text-card-foreground">
                 Kontakt
               </h2>
-              <p className="text-muted-foreground text-xs">
+              <p className="text-muted-foreground text-xs hidden sm:block">
                 Wie man Sie erreicht
               </p>
             </div>
@@ -264,7 +265,7 @@ export default function Profile({ onNavigateBack }: ProfileProps) {
                 disabled={!isEditing}
                 placeholder="Vollständige Adresse"
                 rows={2}
-                className="w-full bg-input border border-border px-3 py-2 text-sm rounded-md disabled:bg-muted disabled:text-muted-foreground focus:ring-1 focus:ring-ring focus:border-primary transition-colors placeholder:text-muted-foreground resize-none"
+                className="w-full bg-input border border-border px-3 py-2.5 md:py-2 text-sm rounded-md disabled:bg-muted disabled:text-muted-foreground focus:ring-1 focus:ring-ring focus:border-primary transition-colors placeholder:text-muted-foreground resize-none"
                 value={formData.address}
                 onChange={handleChange}
               />
@@ -282,9 +283,9 @@ export default function Profile({ onNavigateBack }: ProfileProps) {
         </div>
 
         {/* Banking & Legal Row */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 md:gap-4">
           {/* Banking */}
-          <div className="bg-card rounded-lg border border-border p-4">
+          <div className="bg-card rounded-lg border border-border p-3 md:p-4">
             <div className="flex items-center gap-2 mb-3">
               <div className="p-1.5 bg-chart-1/10 rounded-md">
                 <Banknote className="w-4 h-4 text-chart-1" />
@@ -293,7 +294,7 @@ export default function Profile({ onNavigateBack }: ProfileProps) {
                 <h2 className="text-sm font-semibold text-card-foreground">
                   Banking
                 </h2>
-                <p className="text-muted-foreground text-xs">
+                <p className="text-muted-foreground text-xs hidden sm:block">
                   Finanzielle Details
                 </p>
               </div>
@@ -303,16 +304,16 @@ export default function Profile({ onNavigateBack }: ProfileProps) {
                 name="bankName"
                 disabled={!isEditing}
                 placeholder="Bankname"
-                className="w-full bg-input border border-border px-3 py-2 text-sm rounded-md disabled:bg-muted disabled:text-muted-foreground focus:ring-1 focus:ring-ring focus:border-primary transition-colors placeholder:text-muted-foreground"
+                className="w-full bg-input border border-border px-3 py-2.5 md:py-2 text-sm rounded-md disabled:bg-muted disabled:text-muted-foreground focus:ring-1 focus:ring-ring focus:border-primary transition-colors placeholder:text-muted-foreground"
                 value={formData.bankName}
                 onChange={handleChange}
               />
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <input
                   name="iban"
                   disabled={!isEditing}
                   placeholder="IBAN"
-                  className="w-full bg-input border border-border px-3 py-2 text-sm rounded-md disabled:bg-muted disabled:text-muted-foreground focus:ring-1 focus:ring-ring focus:border-primary transition-colors placeholder:text-muted-foreground"
+                  className="w-full bg-input border border-border px-3 py-2.5 md:py-2 text-sm rounded-md disabled:bg-muted disabled:text-muted-foreground focus:ring-1 focus:ring-ring focus:border-primary transition-colors placeholder:text-muted-foreground"
                   value={formData.iban}
                   onChange={handleChange}
                 />
@@ -320,7 +321,7 @@ export default function Profile({ onNavigateBack }: ProfileProps) {
                   name="bic"
                   disabled={!isEditing}
                   placeholder="BIC"
-                  className="w-full bg-input border border-border px-3 py-2 text-sm rounded-md disabled:bg-muted disabled:text-muted-foreground focus:ring-1 focus:ring-ring focus:border-primary transition-colors placeholder:text-muted-foreground"
+                  className="w-full bg-input border border-border px-3 py-2.5 md:py-2 text-sm rounded-md disabled:bg-muted disabled:text-muted-foreground focus:ring-1 focus:ring-ring focus:border-primary transition-colors placeholder:text-muted-foreground"
                   value={formData.bic}
                   onChange={handleChange}
                 />
@@ -329,7 +330,7 @@ export default function Profile({ onNavigateBack }: ProfileProps) {
           </div>
 
           {/* Legal */}
-          <div className="bg-card rounded-lg border border-border p-4">
+          <div className="bg-card rounded-lg border border-border p-3 md:p-4">
             <div className="flex items-center gap-2 mb-3">
               <div className="p-1.5 bg-destructive/10 rounded-md">
                 <FileText className="w-4 h-4 text-destructive" />
@@ -338,7 +339,7 @@ export default function Profile({ onNavigateBack }: ProfileProps) {
                 <h2 className="text-sm font-semibold text-card-foreground">
                   Rechtliches
                 </h2>
-                <p className="text-muted-foreground text-xs">
+                <p className="text-muted-foreground text-xs hidden sm:block">
                   Rechtliche Informationen
                 </p>
               </div>
@@ -347,7 +348,7 @@ export default function Profile({ onNavigateBack }: ProfileProps) {
               name="lawFirm"
               disabled={!isEditing}
               placeholder="Anwaltskanzlei / Inkassobüro"
-              className="w-full bg-input border border-border px-3 py-2 text-sm rounded-md disabled:bg-muted disabled:text-muted-foreground focus:ring-1 focus:ring-ring focus:border-primary transition-colors placeholder:text-muted-foreground"
+              className="w-full bg-input border border-border px-3 py-2.5 md:py-2 text-sm rounded-md disabled:bg-muted disabled:text-muted-foreground focus:ring-1 focus:ring-ring focus:border-primary transition-colors placeholder:text-muted-foreground"
               value={formData.lawFirm}
               onChange={handleChange}
             />
@@ -356,11 +357,11 @@ export default function Profile({ onNavigateBack }: ProfileProps) {
 
         {/* Compact Actions */}
         {isEditing && (
-          <div className="flex justify-end gap-2 pt-2">
+          <div className="flex flex-col sm:flex-row justify-end gap-2 pt-2">
             <button
               type="button"
               onClick={handleCancel}
-              className="flex items-center gap-1.5 px-4 py-2 bg-secondary text-secondary-foreground text-sm rounded-md hover:bg-secondary/80 transition-colors"
+              className="flex items-center justify-center gap-1.5 px-4 py-2.5 md:py-2 bg-secondary text-secondary-foreground text-sm rounded-md hover:bg-secondary/80 transition-colors order-2 sm:order-1"
             >
               <X className="w-4 h-4" />
               Abbrechen
@@ -368,7 +369,7 @@ export default function Profile({ onNavigateBack }: ProfileProps) {
             <button
               type="submit"
               disabled={isLoading}
-              className="flex items-center gap-1.5 px-4 py-2 bg-primary text-primary-foreground text-sm rounded-md hover:bg-primary/90 disabled:opacity-50 transition-colors"
+              className="flex items-center justify-center gap-1.5 px-4 py-2.5 md:py-2 bg-primary text-primary-foreground text-sm rounded-md hover:bg-primary/90 disabled:opacity-50 transition-colors order-1 sm:order-2"
             >
               <Check className="w-4 h-4" />
               {isLoading ? "Speichere..." : "Speichern"}

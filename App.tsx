@@ -547,7 +547,7 @@ export default function App() {
 
         {/* Dashboard Content */}
         <main
-          className={`max-w-7xl mx-auto px-6 lg:px-8 py-8 ${
+          className={`max-w-7xl mx-auto px-2 md:px-6 lg:px-8 py-4 md:py-8 ${
             showLegalModal ? "pointer-events-none" : ""
           }`}
         >
@@ -558,11 +558,11 @@ export default function App() {
               <DashboardStats />
 
               {/* Legal Qualification Workflow */}
-              <div className="max-w-4xl mx-auto">
+              <div className="max-w-4xl mx-auto px-2 md:px-0">
                 {/* Case Status Display - Only show after case is created */}
                 {currentCase && (
-                  <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                    <div className="flex items-center space-x-3">
+                  <div className="mb-4 md:mb-6 p-3 md:p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                    <div className="flex items-center space-x-2 md:space-x-3">
                       <svg
                         className="w-5 h-5 text-blue-600"
                         fill="none"
@@ -577,7 +577,7 @@ export default function App() {
                         />
                       </svg>
                       <div>
-                        <p className="text-sm font-medium text-blue-800">
+                        <p className="text-xs md:text-sm font-medium text-blue-800">
                           Fall erstellt: {currentCase.caseNumber}
                         </p>
                         <p className="text-xs text-blue-600">
@@ -590,8 +590,8 @@ export default function App() {
 
                 {/* Case Error Display - Only show when there's actually an error */}
                 {caseError && (
-                  <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-                    <div className="flex items-center space-x-3">
+                  <div className="mb-4 md:mb-6 p-3 md:p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                    <div className="flex items-center space-x-2 md:space-x-3">
                       <svg
                         className="w-5 h-5 text-yellow-600"
                         fill="none"
@@ -606,7 +606,7 @@ export default function App() {
                         />
                       </svg>
                       <div>
-                        <p className="text-sm font-medium text-yellow-800">
+                        <p className="text-xs md:text-sm font-medium text-yellow-800">
                           Fallverwaltungswarnung
                         </p>
                         <p className="text-xs text-yellow-600">
@@ -662,22 +662,22 @@ export default function App() {
             </div>
           ) : (
             // Processing/Results View
-            <div className="space-y-6">
+            <div className="space-y-4 md:space-y-6">
               {/* Current File Info */}
               {pdfFile && (
-                <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
-                  <div className="flex items-center space-x-4">
-                    <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                      <DocumentIcon className="w-6 h-6 text-blue-600" />
+                <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 md:p-6">
+                  <div className="flex flex-col md:flex-row md:items-center space-y-3 md:space-y-0 md:space-x-4">
+                    <div className="w-10 h-10 md:w-12 md:h-12 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                      <DocumentIcon className="w-5 h-5 md:w-6 md:h-6 text-blue-600" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-slate-500 uppercase tracking-wide">
+                      <p className="text-xs md:text-sm font-medium text-slate-500 uppercase tracking-wide">
                         Rechnung wird verarbeitet
                       </p>
-                      <p className="text-lg font-semibold text-slate-900 truncate">
+                      <p className="text-base md:text-lg font-semibold text-slate-900 truncate">
                         {pdfFile.name}
                       </p>
-                      <p className="text-sm text-slate-600">
+                      <p className="text-xs md:text-sm text-slate-600">
                         Größe: {(pdfFile.size / 1024).toFixed(2)} KB
                       </p>
                     </div>
@@ -685,7 +685,7 @@ export default function App() {
                       appState === AppState.ERROR) && (
                       <button
                         onClick={handleReset}
-                        className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium rounded-lg transition-colors"
+                        className="w-full md:w-auto px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium rounded-lg transition-colors text-sm md:text-base"
                       >
                         Neue Rechnung verarbeiten
                       </button>
@@ -695,7 +695,7 @@ export default function App() {
               )}
 
               {/* Main Content Area */}
-              <div className="bg-white rounded-2xl shadow-sm border border-slate-200 min-h-96 p-6">
+              <div className="bg-white rounded-2xl shadow-sm border border-slate-200 min-h-64 md:min-h-96 p-4 md:p-6">
                 {renderRightPanelContent()}
               </div>
             </div>
