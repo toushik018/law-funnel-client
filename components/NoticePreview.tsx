@@ -1,75 +1,20 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef } from "react";
 import DocumentIcon from "./icons/DocumentIcon";
 import { PaymentNoticeContent, CompanyDetails, InvoiceData } from "../types";
-import DownloadIcon from "./icons/DownloadIcon";
-import { generatePaymentNoticePDF } from "../utils/pdfGenerator";
 
 interface NoticePreviewProps {
   noticeContent: PaymentNoticeContent;
   ownCompanyDetails: CompanyDetails;
   invoiceData: InvoiceData;
+  onSubmit: () => void;
+  isSubmitting: boolean;
 }
 
-const NoticePreview: React.FC<NoticePreviewProps> = ({
-  noticeContent,
-  ownCompanyDetails,
-  invoiceData,
-}) => {
+const NoticePreview: React.FC<NoticePreviewProps> = ({ noticeContent, ownCompanyDetails, invoiceData, onSubmit, isSubmitting }) => {
   const noticeRef = useRef<HTMLDivElement>(null);
-  const [isDownloading, setIsDownloading] = useState(false);
-  const [feesConfirmed, setFeesConfirmed] = useState(false);
-
-  // Reset confirmation when new content is loaded
-  useEffect(() => {
-    setFeesConfirmed(false);
-  }, [noticeContent]);
 
   const formatPlaceholders = (text: string): string => {
-    return text.replace(
-      /(\[.*?\])/g,
-      '<span class="placeholder-span inline-block bg-amber-50 text-amber-700 font-medium py-1 px-2 rounded border border-amber-200 mx-1 text-xs">$1</span>'
-    );
-  };
-
-  const handleDownloadPdf = async () => {
-    setIsDownloading(true);
-
-    try {
-      await generatePaymentNoticePDF(
-        noticeContent,
-        ownCompanyDetails,
-        invoiceData
-      );
-    } catch (error) {
-      console.error("PDF generation failed:", error);
-
-      // Create a more user-friendly error display
-      const errorContainer = document.createElement("div");
-      errorContainer.className =
-        "fixed top-4 right-4 bg-destructive/10 border border-destructive/20 text-destructive px-4 py-3 rounded-lg shadow-lg z-50 max-w-md";
-      errorContainer.innerHTML = `
-        <div class="flex items-start gap-2">
-          <svg class="w-4 h-4 text-destructive mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-          </svg>
-          <div>
-            <p class="text-sm font-medium text-destructive">PDF-Erstellung fehlgeschlagen</p>
-            <p class="text-xs text-destructive/80 mt-1">Entschuldigung, beim Erstellen der PDF-Datei ist ein Fehler aufgetreten.</p>
-          </div>
-        </div>
-      `;
-
-      document.body.appendChild(errorContainer);
-
-      // Auto-remove after 5 seconds
-      setTimeout(() => {
-        if (errorContainer.parentNode) {
-          errorContainer.parentNode.removeChild(errorContainer);
-        }
-      }, 5000);
-    } finally {
-      setIsDownloading(false);
-    }
+    return text.replace(/(\[.*?\])/g, '<span class="placeholder-span inline-block bg-amber-50 text-amber-700 font-medium py-1 px-2 rounded border border-amber-200 mx-1 text-xs">$1</span>');
   };
 
   const getCityFromAddress = (address: string): string => {
@@ -139,9 +84,7 @@ const NoticePreview: React.FC<NoticePreviewProps> = ({
         word.length > 2 &&
         !/^\d+$/.test(word) && // Not just numbers
         !/^\d{5}$/.test(word) && // Not postal code
-        !/(^str$|^straße$|^allee$|^weg$|^platz$|^gasse$|^ring$|^damm$)$/i.test(
-          word
-        ) && // Not street indicators
+        !/(^str$|^straße$|^allee$|^weg$|^platz$|^gasse$|^ring$|^damm$)$/i.test(word) && // Not street indicators
         !/^(nr|no|nummer)$/i.test(word)
       ); // Not number indicators
     });
@@ -171,12 +114,7 @@ const NoticePreview: React.FC<NoticePreviewProps> = ({
             <DocumentIcon className="w-5 h-5 text-primary" />
           </div>
           <div>
-            <h2 className="text-lg font-semibold text-card-foreground">
-              Vorschau der generierten Mahnung
-            </h2>
-            <p className="text-xs text-muted-foreground">
-              Überprüfen Sie die Mahnung vor dem Download
-            </p>
+            <h2 className="text-lg font-semibold text-card-foreground">Vorschau der generierten Mahnung</h2>
           </div>
         </div>
       </div>
@@ -193,8 +131,7 @@ const NoticePreview: React.FC<NoticePreviewProps> = ({
               fontSize: "10pt",
               lineHeight: 1.6,
               maxWidth: "100%",
-            }}
-          >
+            }}>
             <div
               data-pdf-header
               style={{
@@ -202,17 +139,10 @@ const NoticePreview: React.FC<NoticePreviewProps> = ({
                 borderBottom: "1px solid #e2e8f0",
                 paddingBottom: "0.5rem",
                 marginBottom: "2rem",
-              }}
-            >
-              <p style={{ fontWeight: "bold", margin: 0 }}>
-                {ownCompanyDetails.name || "[Ihr Firmenname]"}
-              </p>
-              <p style={{ margin: 0 }}>
-                {ownCompanyDetails.address || "[Ihre Adresse]"}
-              </p>
-              <p style={{ margin: 0 }}>
-                {ownCompanyDetails.contact || "[Ihre Kontaktdaten]"}
-              </p>
+              }}>
+              <p style={{ fontWeight: "bold", margin: 0 }}>{ownCompanyDetails.name || "[Ihr Firmenname]"}</p>
+              <p style={{ margin: 0 }}>{ownCompanyDetails.address || "[Ihre Adresse]"}</p>
+              <p style={{ margin: 0 }}>{ownCompanyDetails.contact || "[Ihre Kontaktdaten]"}</p>
             </div>
 
             <table
@@ -221,15 +151,12 @@ const NoticePreview: React.FC<NoticePreviewProps> = ({
                 marginBottom: "2rem",
                 fontSize: "9pt",
                 verticalAlign: "top",
-              }}
-            >
+              }}>
               <tbody>
                 <tr>
                   <td data-pdf-address style={{ width: "60%" }}>
                     <p style={{ margin: 0 }}>An</p>
-                    <p style={{ fontWeight: "bold", margin: 0 }}>
-                      {invoiceData.clientName}
-                    </p>
+                    <p style={{ fontWeight: "bold", margin: 0 }}>{invoiceData.clientName}</p>
                     <div>
                       {invoiceData.clientAddress.split("\n").map((line, i) => (
                         <span key={i}>
@@ -241,14 +168,7 @@ const NoticePreview: React.FC<NoticePreviewProps> = ({
                   </td>
                   <td data-pdf-date style={{ textAlign: "right" }}>
                     <p style={{ margin: 0 }}>
-                      <strong>Ort:</strong>{" "}
-                      {city ? (
-                        city
-                      ) : (
-                        <span className="inline-block bg-amber-50 text-amber-700 font-medium py-1 px-2 rounded border border-amber-200 text-xs">
-                          [Ihre Stadt]
-                        </span>
-                      )}
+                      <strong>Ort:</strong> {city ? city : <span className="inline-block bg-amber-50 text-amber-700 font-medium py-1 px-2 rounded border border-amber-200 text-xs">[Ihre Stadt]</span>}
                     </p>
                     <p style={{ margin: 0 }}>
                       <strong>Datum:</strong>{" "}
@@ -270,14 +190,11 @@ const NoticePreview: React.FC<NoticePreviewProps> = ({
                 color: "#1e293b",
                 marginBottom: "2rem",
                 fontSize: "12pt",
-              }}
-            >
+              }}>
               Betreff: {noticeContent.subject}
             </p>
 
-            <p style={{ marginBottom: "1.5rem" }}>
-              Sehr geehrte Damen und Herren,
-            </p>
+            <p style={{ marginBottom: "1.5rem" }}>Sehr geehrte Damen und Herren,</p>
 
             {noticeContent.body.map((paragraph, index) => (
               <p
@@ -297,8 +214,7 @@ const NoticePreview: React.FC<NoticePreviewProps> = ({
                 padding: "1rem",
                 borderRadius: "6px",
                 border: "1px solid #e2e8f0",
-              }}
-            >
+              }}>
               <p
                 data-pdf-demands-title
                 style={{
@@ -308,8 +224,7 @@ const NoticePreview: React.FC<NoticePreviewProps> = ({
                   marginBottom: "0.75rem",
                   marginTop: 0,
                   fontSize: "10pt",
-                }}
-              >
+                }}>
                 Forderungsaufstellung:
               </p>
               <table
@@ -318,31 +233,20 @@ const NoticePreview: React.FC<NoticePreviewProps> = ({
                   color: "#334155",
                   width: "100%",
                   borderCollapse: "collapse",
-                }}
-              >
+                }}>
                 <tbody>
                   <tr>
                     <td style={{ padding: "0.25rem 0" }}>Hauptforderung:</td>
-                    <td style={{ padding: "0.25rem 0", textAlign: "right" }}>
-                      {noticeContent.demands.mainAmount}
-                    </td>
+                    <td style={{ padding: "0.25rem 0", textAlign: "right" }}>{noticeContent.demands.mainAmount}</td>
                   </tr>
                   <tr>
                     <td style={{ padding: "0.25rem 0" }}>Verzugszinsen:</td>
-                    <td style={{ padding: "0.25rem 0", textAlign: "right" }}>
-                      {noticeContent.demands.interestAmount}
-                    </td>
+                    <td style={{ padding: "0.25rem 0", textAlign: "right" }}>{noticeContent.demands.interestAmount}</td>
                   </tr>
                   {noticeContent.demands.flatFee && (
                     <tr>
-                      <td
-                        style={{ padding: "0.25rem 0", verticalAlign: "top" }}
-                      >
-                        Verzugspauschale (§ 288 Abs. 5 BGB):
-                      </td>
-                      <td style={{ padding: "0.25rem 0", textAlign: "right" }}>
-                        {noticeContent.demands.flatFee}
-                      </td>
+                      <td style={{ padding: "0.25rem 0", verticalAlign: "top" }}>Verzugspauschale (§ 288 Abs. 5 BGB):</td>
+                      <td style={{ padding: "0.25rem 0", textAlign: "right" }}>{noticeContent.demands.flatFee}</td>
                     </tr>
                   )}
                   {/* Spacer row to ensure consistent spacing before the total line in the PDF */}
@@ -354,14 +258,12 @@ const NoticePreview: React.FC<NoticePreviewProps> = ({
                       fontWeight: "bold",
                       fontStyle: "italic",
                       color: "#1e293b",
-                    }}
-                  >
+                    }}>
                     <td
                       style={{
                         borderTop: "1px solid #cbd5e1",
                         paddingTop: "0.75rem",
-                      }}
-                    >
+                      }}>
                       Gesamtbetrag:
                     </td>
                     <td
@@ -369,8 +271,7 @@ const NoticePreview: React.FC<NoticePreviewProps> = ({
                         textAlign: "right",
                         borderTop: "1px solid #cbd5e1",
                         paddingTop: "0.75rem",
-                      }}
-                    >
+                      }}>
                       {noticeContent.demands.totalAmount}
                     </td>
                   </tr>
@@ -379,9 +280,7 @@ const NoticePreview: React.FC<NoticePreviewProps> = ({
             </div>
 
             <div style={{ margin: "1.5rem 0" }}>
-              <p style={{ marginBottom: "0.5rem" }}>
-                Bitte überweisen Sie den Gesamtbetrag auf das folgende Konto:
-              </p>
+              <p style={{ marginBottom: "0.5rem" }}>Bitte überweisen Sie den Gesamtbetrag auf das folgende Konto:</p>
               <div
                 style={{
                   backgroundColor: "#eef2ff",
@@ -389,16 +288,13 @@ const NoticePreview: React.FC<NoticePreviewProps> = ({
                   padding: "1rem",
                   borderRadius: "6px",
                   fontSize: "9pt",
-                }}
-              >
+                }}>
                 <p style={{ margin: "0 0 0.25rem 0" }}>
                   <strong>Bank:</strong>{" "}
                   {ownCompanyDetails.bankName ? (
                     ownCompanyDetails.bankName
                   ) : (
-                    <span className="inline-block bg-amber-50 text-amber-700 font-medium py-1 px-2 rounded border border-amber-200 text-xs">
-                      [Name der Bank]
-                    </span>
+                    <span className="inline-block bg-amber-50 text-amber-700 font-medium py-1 px-2 rounded border border-amber-200 text-xs">[Name der Bank]</span>
                   )}
                 </p>
                 <p style={{ margin: "0 0 0.25rem 0" }}>
@@ -406,46 +302,27 @@ const NoticePreview: React.FC<NoticePreviewProps> = ({
                   {ownCompanyDetails.iban ? (
                     ownCompanyDetails.iban
                   ) : (
-                    <span className="inline-block bg-amber-50 text-amber-700 font-medium py-1 px-2 rounded border border-amber-200 text-xs">
-                      [IBAN]
-                    </span>
+                    <span className="inline-block bg-amber-50 text-amber-700 font-medium py-1 px-2 rounded border border-amber-200 text-xs">[IBAN]</span>
                   )}
                 </p>
                 <p style={{ margin: "0 0 0.25rem 0" }}>
                   <strong>BIC:</strong>{" "}
-                  {ownCompanyDetails.bic ? (
-                    ownCompanyDetails.bic
-                  ) : (
-                    <span className="inline-block bg-amber-50 text-amber-700 font-medium py-1 px-2 rounded border border-amber-200 text-xs">
-                      [BIC]
-                    </span>
-                  )}
+                  {ownCompanyDetails.bic ? ownCompanyDetails.bic : <span className="inline-block bg-amber-50 text-amber-700 font-medium py-1 px-2 rounded border border-amber-200 text-xs">[BIC]</span>}
                 </p>
                 <p style={{ margin: 0 }}>
-                  <strong>Verwendungszweck:</strong> Rechnung{" "}
-                  {invoiceData.invoiceNumber} / {invoiceData.clientName}
+                  <strong>Verwendungszweck:</strong> Rechnung {invoiceData.invoiceNumber} / {invoiceData.clientName}
                 </p>
               </div>
             </div>
 
             <p style={{ marginBottom: "0.4rem" }}>Mit freundlichen Grüßen,</p>
 
-            <div
-              style={{ marginTop: "1rem", fontSize: "10pt", color: "#475569" }}
-            >
+            <div style={{ marginTop: "1rem", fontSize: "10pt", color: "#475569" }}>
               <p style={{ margin: 0 }}>
-                {ownCompanyDetails.signerName || (
-                  <span className="inline-block bg-amber-50 text-amber-700 font-medium py-1 px-2 rounded border border-amber-200 text-xs">
-                    [Ihr Name]
-                  </span>
-                )}
+                {ownCompanyDetails.signerName || <span className="inline-block bg-amber-50 text-amber-700 font-medium py-1 px-2 rounded border border-amber-200 text-xs">[Ihr Name]</span>}
               </p>
               <p style={{ margin: 0, fontSize: "9pt" }}>
-                {ownCompanyDetails.name || (
-                  <span className="inline-block bg-amber-50 text-amber-700 font-medium py-1 px-2 rounded border border-amber-200 text-xs">
-                    [Ihr Firmenname]
-                  </span>
-                )}
+                {ownCompanyDetails.name || <span className="inline-block bg-amber-50 text-amber-700 font-medium py-1 px-2 rounded border border-amber-200 text-xs">[Ihr Firmenname]</span>}
               </p>
             </div>
           </div>
@@ -454,46 +331,44 @@ const NoticePreview: React.FC<NoticePreviewProps> = ({
 
       {/* Fee Confirmation & Download Section */}
       <div className="bg-card rounded-lg border border-border p-4 space-y-4">
-        {/* Fee Confirmation */}
-        <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
-          <label className="flex items-start gap-3 cursor-pointer">
-            <input
-              type="checkbox"
-              className="w-4 h-4 text-primary border-border rounded focus:ring-ring focus:ring-2 mt-1 flex-shrink-0"
-              checked={feesConfirmed}
-              onChange={(e) => setFeesConfirmed(e.target.checked)}
-            />
-            <div>
-              <p className="text-sm font-medium text-amber-800 mb-1">
-                Rechtliche Bestätigung erforderlich
-              </p>
-              <p className="text-xs text-amber-700 leading-relaxed">
-                Ich bestätige, dass ich berechtigt bin, die in dieser Mahnung
-                angegebenen Mahngebühren zu verlangen, und dass ich für die
-                rechtliche Zulässigkeit der Höhe und Art der Mahngebühr selbst
-                verantwortlich bin.
-              </p>
-            </div>
-          </label>
+        <div className="space-y-3">
+          <h3 className="text-sm font-semibold text-card-foreground">Letzter Schritt vor dem Abschicken</h3>
+          <p className="text-xs text-muted-foreground leading-relaxed">
+            Bitte überprüfe, ob alle Angaben stimmen und bestätige, dass du die folgenden Unterlagen zur Abtretung bereit hältst. Diese Informationen werden dem ausgewählten Anwalt zur weiteren
+            Bearbeitung übermittelt.
+          </p>
+          <ul className="space-y-2 text-xs text-card-foreground">
+            <li className="flex items-start gap-2">
+              <span className="mt-1 h-1.5 w-1.5 rounded-full bg-primary" />
+              <span>Vollständig ausgefüllte Abtretungserklärung zwischen dir und dem Mandanten (inkl. Datum und Unterschrift).</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="mt-1 h-1.5 w-1.5 rounded-full bg-primary" />
+              <span>Nachweis der offenen Forderung (Rechnung, Mahnschreiben, Zahlungsbelege).</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="mt-1 h-1.5 w-1.5 rounded-full bg-primary" />
+              <span>Kontaktdaten der zahlungspflichtigen Partei inklusive Anschrift und Kommunikationsweg.</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="mt-1 h-1.5 w-1.5 rounded-full bg-primary" />
+              <span>Deine eigenen Unternehmens- und Bankdaten für den Eingang der Zahlung.</span>
+            </li>
+          </ul>
         </div>
 
-        {/* Download Button */}
         <div className="flex justify-end">
           <button
-            onClick={handleDownloadPdf}
-            disabled={isDownloading || !feesConfirmed}
-            className="flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primary/90 text-primary-foreground font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md"
-          >
-            {isDownloading ? (
+            onClick={onSubmit}
+            disabled={isSubmitting}
+            className="flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primary/90 text-primary-foreground font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md">
+            {isSubmitting ? (
               <>
                 <div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
-                <span>Wird heruntergeladen...</span>
+                <span>Wird übermittelt...</span>
               </>
             ) : (
-              <>
-                <DownloadIcon className="w-4 h-4" />
-                <span>PDF herunterladen</span>
-              </>
+              <span>Abschicken</span>
             )}
           </button>
         </div>

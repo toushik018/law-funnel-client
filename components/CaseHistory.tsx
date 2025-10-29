@@ -473,8 +473,27 @@ export default function CaseHistory({ onNavigateBack }: CaseHistoryProps) {
                       </div>
 
                       <div className="flex items-start ml-2 md:ml-4 mt-2 md:mt-0">
-                        {case_.status !== CaseStatus.COMPLETED &&
-                          case_.status !== CaseStatus.NOTICE_GENERATED && (
+                        {(() => {
+                          const isDeletionLocked = [
+                            CaseStatus.NOTICE_GENERATED,
+                            CaseStatus.LAWYER_SEARCH,
+                            CaseStatus.COMPLETED,
+                          ].includes(case_.status);
+
+                          if (isDeletionLocked) {
+                            const lockReason =
+                              case_.status === CaseStatus.LAWYER_SEARCH
+                                ? "Dieser Fall wird bereits an eine Kanzlei übergeben und kann nicht mehr gelöscht werden."
+                                : "Dieser Fall ist archiviert und kann nicht mehr gelöscht werden.";
+
+                            return (
+                              <div className="max-w-xs text-[11px] md:text-xs text-muted-foreground bg-amber-50 border border-amber-200 px-3 py-2 rounded-lg">
+                                {lockReason}
+                              </div>
+                            );
+                          }
+
+                          return (
                             <button
                               onClick={() => setShowDeleteConfirm(case_.id)}
                               className="flex items-center justify-center w-7 h-7 md:w-8 md:h-8 text-destructive/60 hover:text-destructive hover:bg-destructive/10 rounded-lg transition-all duration-200"
@@ -494,7 +513,8 @@ export default function CaseHistory({ onNavigateBack }: CaseHistoryProps) {
                                 />
                               </svg>
                             </button>
-                          )}
+                          );
+                        })()}
                       </div>
                     </div>
                   </div>

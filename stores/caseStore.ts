@@ -31,6 +31,7 @@ interface CaseStore {
     updateDigitalSignatureStatus: (isCompleted: boolean) => Promise<void>;
     updateClientType: (clientType: 'company' | 'private') => Promise<void>;
     updatePaymentNoticeStatus: (isGenerated: boolean) => Promise<void>;
+    markLawyerSearch: () => Promise<void>;
 
     // Case management
     completeCase: () => Promise<void>;
@@ -173,6 +174,23 @@ export const useCaseStore = create<CaseStore>()(
                     set({ currentCase: updatedCase, loading: false });
                 } catch (error) {
                     const errorMessage = error instanceof Error ? error.message : 'Failed to update payment notice status';
+                    set({ error: errorMessage, loading: false });
+                    throw error;
+                }
+            },
+
+            markLawyerSearch: async () => {
+                const { currentCase } = get();
+                if (!currentCase) {
+                    throw new Error('No current case to update');
+                }
+
+                set({ loading: true, error: null });
+                try {
+                    const updatedCase = await caseService.markLawyerSearch(currentCase.id);
+                    set({ currentCase: updatedCase, loading: false });
+                } catch (error) {
+                    const errorMessage = error instanceof Error ? error.message : 'Failed to submit case';
                     set({ error: errorMessage, loading: false });
                     throw error;
                 }

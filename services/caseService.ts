@@ -35,6 +35,7 @@ export enum CaseStatus {
     SIGNATURE_COMPLETE = 'signature_complete',
     CLIENT_TYPE_SELECTED = 'client_type_selected',
     NOTICE_GENERATED = 'notice_generated',
+    LAWYER_SEARCH = 'lawyer_search',
     COMPLETED = 'completed',
     CANCELLED = 'cancelled'
 }
@@ -157,6 +158,12 @@ class CaseService {
         return this.makeRequest<CaseData>(`${this.baseUrl}/${caseId}/payment-notice`, {
             method: 'PUT',
             body: JSON.stringify({ isGenerated }),
+        });
+    }
+
+    async markLawyerSearch(caseId: string): Promise<CaseData> {
+        return this.makeRequest<CaseData>(`${this.baseUrl}/${caseId}/lawyer-search`, {
+            method: 'PUT',
         });
     }
 

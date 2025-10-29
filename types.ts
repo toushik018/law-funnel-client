@@ -12,6 +12,7 @@ export enum AppState {
   EXTRACTING_DATA,
   GENERATING_NOTICE,
   SUCCESS,
+  LAWYER_SEARCH,
   ERROR,
 }
 
@@ -61,6 +62,7 @@ export enum CaseStatus {
   CLIENT_TYPE_SELECTED = 'client_type_selected',
   INVOICE_PROCESSED = 'invoice_processed',
   NOTICE_GENERATED = 'notice_generated',
+  LAWYER_SEARCH = 'lawyer_search',
   NOTICE_SENT = 'notice_sent',
   COMPLETED = 'completed',
   CANCELLED = 'cancelled'

@@ -38,6 +38,7 @@ import CaseHistory from "./components/CaseHistory";
 import ModernStepper from "./components/ModernStepper";
 import ClientTypeSelection from "./components/ClientTypeSelection";
 import InvoiceUpload from "./components/InvoiceUpload";
+import AssignmentChecklist from "./components/AssignmentChecklist";
 
 // Base interest rate as of January 1st, 2024. This should be updated semi-annually.
 // Source: https://www.bundesbank.de/de/bundesbank/organisation/agb-und-regelungen/basiszinssatz-607820
@@ -53,8 +54,7 @@ export default function App() {
     createCase,
     updateLegalQualification,
     updateClientType,
-    updatePaymentNoticeStatus,
-    completeCase,
+    markLawyerSearch,
     clearCurrentCase,
     loading: caseLoading,
     error: caseError,
@@ -89,6 +89,10 @@ export default function App() {
 
   // Track if we've created a case for this session
   const [caseCreated, setCaseCreated] = useState(false);
+
+  const [showChecklist, setShowChecklist] = useState(false);
+  const [submittingCase, setSubmittingCase] = useState(false);
+  const [checklistError, setChecklistError] = useState<string | null>(null);
 
   // Simple routing state
   const [route, setRoute] = useState(window.location.pathname);
@@ -184,6 +188,9 @@ export default function App() {
     setDigitalSignatureData(null);
     setCurrentStep("legal");
     setCaseCreated(false);
+    setShowChecklist(false);
+    setSubmittingCase(false);
+    setChecklistError(null);
     // Clear current case to start fresh
     clearCurrentCase();
     // Do not reset clientType, companyDetails, or lawyerDetails
@@ -228,25 +235,9 @@ export default function App() {
       );
 
       setPaymentNotice(notice);
-
-      // Update case with payment notice generation status
-      if (currentCase) {
-        try {
-          await updatePaymentNoticeStatus(true);
-          // Mark case as completed
-          await completeCase();
-        } catch (error) {
-          console.error(
-            "Failed to update case with payment notice status:",
-            error
-          );
-          // Don't block the user workflow
-        }
-      }
-
       setAppState(AppState.SUCCESS);
     },
-    [user, clientType, currentCase, updatePaymentNoticeStatus, completeCase]
+    [user, clientType]
   );
 
   const processFile = useCallback(
@@ -367,6 +358,56 @@ export default function App() {
       setAppState(AppState.ERROR);
     }
   }, [invoiceData, daysOverdue, interestAmount, flatFee, generateNotice]);
+
+  const handleOpenChecklist = useCallback(() => {
+    setChecklistError(null);
+    setShowChecklist(true);
+  }, []);
+
+  const handleChecklistCancel = useCallback(() => {
+    if (submittingCase) {
+      return;
+    }
+    setShowChecklist(false);
+    setChecklistError(null);
+  }, [submittingCase]);
+
+  const handleChecklistConfirm = useCallback(async () => {
+    if (submittingCase) {
+      return;
+    }
+
+    if (!invoiceData || !paymentNotice) {
+      setChecklistError(
+        "Die Fallübergabe ist derzeit nicht möglich. Bitte lade die Rechnung erneut hoch."
+      );
+      return;
+    }
+
+    if (!currentCase) {
+      setChecklistError(null);
+      setShowChecklist(false);
+      setAppState(AppState.LAWYER_SEARCH);
+      return;
+    }
+
+    setChecklistError(null);
+    setSubmittingCase(true);
+
+    try {
+      await markLawyerSearch();
+      setShowChecklist(false);
+      setAppState(AppState.LAWYER_SEARCH);
+    } catch (err: any) {
+      console.error(err);
+      setChecklistError(
+        err?.message ||
+          "Die Fallübergabe konnte nicht abgeschlossen werden. Bitte versuche es erneut."
+      );
+    } finally {
+      setSubmittingCase(false);
+    }
+  }, [submittingCase, currentCase, invoiceData, paymentNotice, markLawyerSearch]);
 
   // Handle legal qualification completion
   const handleLegalQualificationComplete = async (
@@ -489,7 +530,60 @@ export default function App() {
                 signerName: user?.name || "",
               }}
               invoiceData={invoiceData}
+              onSubmit={handleOpenChecklist}
+              isSubmitting={submittingCase}
             />
+          </div>
+        );
+      case AppState.LAWYER_SEARCH:
+        return (
+          <div className="flex flex-col items-center justify-center h-full text-center gap-6 py-10">
+            <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center">
+              <svg
+                className="w-8 h-8"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+            </div>
+            <div className="space-y-2">
+              <h2 className="text-2xl font-semibold text-emerald-700">
+                Ihr Anwalt wird gesucht
+              </h2>
+              <p className="text-sm text-muted-foreground max-w-md">
+                Wir haben Ihre Unterlagen erhalten. Susko gleicht Ihren Fall nun
+                mit unserem Netzwerk ab und meldet sich, sobald eine passende
+                Kanzlei gefunden wurde.
+              </p>
+            </div>
+            {currentCase && (
+              <div className="bg-emerald-50 border border-emerald-100 text-emerald-900 px-4 py-2 rounded-lg text-sm">
+                Fallnummer: <span className="font-semibold">{currentCase.caseNumber}</span>
+              </div>
+            )}
+            <div className="flex flex-col sm:flex-row gap-3">
+              {currentCase && (
+                <button
+                  onClick={() => navigate("/cases")}
+                  className="px-5 py-2.5 bg-emerald-600 text-white rounded-lg font-medium hover:bg-emerald-700 transition-colors"
+                >
+                  Fallübersicht öffnen
+                </button>
+              )}
+              <button
+                onClick={handleReset}
+                className="px-5 py-2.5 border border-border rounded-lg font-medium text-foreground hover:bg-accent transition-colors"
+              >
+                Neuen Fall starten
+              </button>
+            </div>
           </div>
         );
       case AppState.ERROR:
@@ -714,6 +808,14 @@ export default function App() {
         <LegalDisclaimerModal onAcknowledge={handleAcknowledgeDisclaimer} />
       )}
       {renderContent()}
+      {showChecklist && (
+        <AssignmentChecklist
+          onCancel={handleChecklistCancel}
+          onConfirm={handleChecklistConfirm}
+          isSubmitting={submittingCase}
+          error={checklistError}
+        />
+      )}
     </AuthWrapper>
   );
 }
